@@ -1,0 +1,57 @@
+{ 
+  "Comment": "This state machine represents a product price update approval workflow.",
+  "StartAt": "Validate Product",
+  "States": {
+    "Validate Product": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-GetProduct",
+      "ResultPath": "$.Product",
+      "Next": "Notify Approver" 
+    },
+    "Notify Approver": {
+      "Type": "Task",
+       "Resource": "arn:aws:states:::sns:publish",
+       "Parameters": {
+         "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
+         "Message": "Price change approval requested"
+       },
+       "ResultPath": "$.Notification",
+       "Next": "Wait For Approval" 
+    },
+    "Wait For Approval": {
+       "Type": "Task",
+       "Resource": "arn:aws:states:us-west-2:691995883950:activity:PriceUpdateApproval",
+       "ResultPath": "$.Approval",
+       "Next": "Approved?" 
+    },
+    "Approved?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.Approval.Approved",
+          "BooleanEquals": true,
+          "Next": "Update Price"
+        },
+        {
+          "Variable": "$.Approval.Approved",
+          "BooleanEquals": false,
+          "Next": "Notify Requestor"
+        }
+      ]
+    },
+    "Update Price": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-UpdatePrice",
+      "End": true
+    },
+    "Notify Requestor": {
+      "Type": "Task",
+       "Resource": "arn:aws:states:::sns:publish",
+       "Parameters": {
+         "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
+         "Message": "Price change rejected"
+       },
+      "End": true
+    }
+  }
+}
