@@ -22,7 +22,7 @@ Resources:
             Ref: beforeAllowTraffic
           PostTraffic:
             Ref: afterAllowTraffic
-      CodeUri: s3://my-pipeline-artifact-bucket/7f3cabcd9e00a4c720ea18c43fe822b6
+      CodeUri: s3://my-pipeline-artifact-bucket/f93e42e88a017abf47d83c9e9a97ec7f
   beforeAllowTraffic:
     Type: AWS::Serverless::Function
     Properties:
@@ -51,7 +51,7 @@ Resources:
         Variables:
           NewVersion:
             Ref: myDateTimeFunction.Version
-      CodeUri: s3://my-pipeline-artifact-bucket/7f3cabcd9e00a4c720ea18c43fe822b6
+      CodeUri: s3://my-pipeline-artifact-bucket/f93e42e88a017abf47d83c9e9a97ec7f
   afterAllowTraffic:
     Type: AWS::Serverless::Function
     Properties:
@@ -80,4 +80,4 @@ Resources:
         Variables:
           NewVersion:
             Ref: myDateTimeFunction.Version
-      CodeUri: s3://my-pipeline-artifact-bucket/7f3cabcd9e00a4c720ea18c43fe822b6
+      CodeUri: s3://my-pipeline-artifact-bucket/f93e42e88a017abf47d83c9e9a97ec7f

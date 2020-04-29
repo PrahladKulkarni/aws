@@ -9,7 +9,7 @@
     	console.log("Entering PostTraffic Hook!");
     	
     	// Read the DeploymentId and LifecycleEventHookExecutionId from the event payload
-      var deploymentId = event.DeploymentId;
+        var deploymentId = event.DeploymentId;
     	var lifecycleEventHookExecutionId = event.LifecycleEventHookExecutionId;
     
     	var functionToTest = process.env.NewVersion;

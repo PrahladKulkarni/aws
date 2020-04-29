@@ -1,0 +1,17 @@
+#!/bin/bash
+SUCCESS=0
+FAILURE=1
+ERROR=`tput setaf 1`
+INFO=`tput setaf 7`
+#
+# This script performs a simple functional test agaist the locally deployed application
+#
+result=$(curl -s http://localhost:80/)
+
+if [[ "$result" =~ "Product Catalog" ]]; then
+    echo "${INFO}Functional tests passed."; exit $SUCCESS
+else
+    echo "${ERROR}Functional tests failed for the web content:"
+    echo $result
+    exit $FAILURE
+fi

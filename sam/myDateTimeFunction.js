@@ -56,7 +56,10 @@
     
       const response = {
         statusCode: sc,
-        headers: { "Content-type": "application/json" },
+        headers: { 
+          "Content-type": "application/json",
+          "Application-Version": "1.6" 
+         },
         body: JSON.stringify( result )
       };
     
