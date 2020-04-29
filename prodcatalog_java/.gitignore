@@ -3,6 +3,7 @@
 .project
 .settings
 .vscode
+env.txt
 bin
 build
 target
