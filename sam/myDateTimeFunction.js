@@ -58,7 +58,7 @@
         statusCode: sc,
         headers: { 
           "Content-type": "application/json",
-          "Application-Version": "1.6" 
+          "Application-Version": "1.7" 
          },
         body: JSON.stringify( result )
       };
