@@ -17,14 +17,17 @@ def lambda_handler(event, context):
 
     client = boto3.client('rekognition')
 
-    response = client.detect_labels(Image={'S3Object': {'Bucket':sourceBucket, 'Name':sourceKey}},
-        MaxLabels=3)
-
     result = []
-    print('Detected the following labels for ' + sourceKey)
-    for label in response['Labels']:
-        result.append(label['Name'] + ' : ' + str(label['Confidence']))
-    
-    logger.info(result)
+    try:
+        response = client.detect_labels(Image={'S3Object': {'Bucket':sourceBucket, 'Name':sourceKey}}, MaxLabels=3)
+            
+        print('Detected the following labels for ' + sourceKey)
+        
+        for label in response['Labels']:
+            result.append(label['Name'] + ' : ' + str(label['Confidence']))
+            
+        logger.info(result)    
+    except:
+        print("Unable to process the object as an image")
 
     return result
