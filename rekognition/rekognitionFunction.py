@@ -5,8 +5,12 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 """
-This function is an event handler on the S3 PUT event.
-It calls Amazon Rekognition service to detect labels for the newly uploaded object.   
+This function is an event handler on the S3 PUT event. It calls Amazon Rekognition
+service to detect labels for the newly uploaded object.
+
+The functions provides no exception handler, instead it forwards faulty invocation
+records to a Lambda destination. To cause such a condition, upload a non-image object
+to the source bucket.
 """
 def lambda_handler(event, context):
 
@@ -18,16 +22,14 @@ def lambda_handler(event, context):
     client = boto3.client('rekognition')
 
     result = []
-    try:
-        response = client.detect_labels(Image={'S3Object': {'Bucket':sourceBucket, 'Name':sourceKey}}, MaxLabels=3)
-            
-        print('Detected the following labels for ' + sourceKey)
+
+    response = client.detect_labels(Image={'S3Object': {'Bucket':sourceBucket, 'Name':sourceKey}}, MaxLabels=3)
         
-        for label in response['Labels']:
-            result.append(label['Name'] + ' : ' + str(label['Confidence']))
-            
-        logger.info(result)    
-    except:
-        print("Unable to process the object as an image")
+    print('Detected the following labels for ' + sourceKey)
+    
+    for label in response['Labels']:
+        result.append(label['Name'] + ' : ' + str(label['Confidence']))
+        
+    logger.info(result)    
 
     return result
