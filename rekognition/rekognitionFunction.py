@@ -14,21 +14,19 @@ to the source bucket.
 """
 def lambda_handler(event, context):
 
+    # fetch the data from the event
     sourceBucket = event['Records'][0]['s3']['bucket']['name']
     sourceKey = event['Records'][0]['s3']['object']['key']
 
     logger.info("Initiating image rekognition for key {} in bucket {}".format(sourceKey, sourceBucket))
 
     client = boto3.client('rekognition')
-
-    result = []
-
     response = client.detect_labels(Image={'S3Object': {'Bucket':sourceBucket, 'Name':sourceKey}}, MaxLabels=3)
         
     print('Detected the following labels for ' + sourceKey)
-    
+    result = []
     for label in response['Labels']:
-        result.append(label['Name'] + ' : ' + str(label['Confidence']))
+        result.append("{}: {:.2f}".format(label['Name'], label['Confidence']))
         
     logger.info(result)    
 
