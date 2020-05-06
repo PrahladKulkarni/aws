@@ -1,34 +1,30 @@
-#
-# # s3 Image Rekognition Microservice
-#
-
-from __future__ import print_function
 import boto3
+import logging
 
-def handler(event, context):
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
-    print('Initiating image rekognition')
+"""
+This function is an event handler on the S3 PUT event.
+It calls Amazon Rekognition service to detect labels for the newly uploaded object.   
+"""
+def lambda_handler(event, context):
 
-    bucket = event['ourBucket']
-    key = event['ourKey']
+    sourceBucket = event['Records'][0]['s3']['bucket']['name']
+    sourceKey = event['Records'][0]['s3']['object']['key']
+
+    logger.info("Initiating image rekognition for key {} in bucket {}".format(sourceKey, sourceBucket))
 
     client = boto3.client('rekognition')
 
-    response = client.detect_labels(Image={'S3Object': {'Bucket':bucket, 'Name':key}},
-        MaxLabels=10,
-        MinConfidence=75)
+    response = client.detect_labels(Image={'S3Object': {'Bucket':sourceBucket, 'Name':sourceKey}},
+        MaxLabels=3)
 
-    print('Detected the following labels for ' + key)
+    result = []
+    print('Detected the following labels for ' + sourceKey)
     for label in response['Labels']:
-        print(label['Name'] + ' : ' + str(label['Confidence']))
-        if label['Name'] == "Human":
-            found = 'human'
-            break
-        else:
-            found = 'other'
+        result.append(label['Name'] + ' : ' + str(label['Confidence']))
+    
+    logger.info(result)
 
-    discovery = {
-        "found": found,
-        }
-
-    return discovery
+    return result
