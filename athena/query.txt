@@ -1,0 +1,4 @@
+SELECT *
+FROM product_catalog
+WHERE price < 1000 AND year > 2017 
+ORDER BY  id 
