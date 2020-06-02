@@ -1,0 +1,38 @@
+{
+    "StartAt": "Process Image",
+    "States": {
+        "Process Image": {
+            "Next": "Human Found?",
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-west-2:088336676669:function:MyappCdkStack-rekognitionFunctionAC00BB5D-QZOOEYNQ37PV"
+        },
+        "Human Found?": {
+            "Type": "Choice",
+            "Choices": [
+                {
+                    "Variable": "$.found",
+                    "StringEquals": "human",
+                    "Next": "Process Human"
+                },
+                {
+                    "Variable": "$.found",
+                    "StringEquals": "other",
+                    "Next": "Other Processing"
+                }
+            ]
+        },
+        "Process Human": {
+            "Next": "We succeeded! Yay!",
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-west-2:088336676669:function:MyappCdkStack-humanFunction7E7930F6-FSTGK8VRGXB"
+        },
+        "We succeeded! Yay!": {
+            "Type": "Succeed"
+        },
+        "Other Processing": {
+            "Type": "Pass",
+            "Next": "We succeeded! Yay!"
+        }
+    },
+    "TimeoutSeconds": 300
+}
