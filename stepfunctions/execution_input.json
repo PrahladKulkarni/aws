@@ -1,4 +1,6 @@
 {
-  "productId": 203,  
-  "price": 200
+  "MyInput": {
+    "itemId": "202",  
+    "price": 1300
+  }
 }

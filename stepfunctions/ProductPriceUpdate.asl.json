@@ -1,0 +1,167 @@
+{
+  "Comment": "This state machine represents a product price update approval workflow.",
+  "StartAt": "Get Product Item",
+  "States": {
+    "Get Product Item": {
+      "Comment": "This task is an example of a direct call to DynamoDB API. It could be used to validate the product id, but there is no easy way to check for the presence of an Item attribute in the output. Therefore we'll have to do it in the Lambda function.",
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:getItem",
+      "Parameters": {
+        "TableName": "ProductCatalog",
+        "Key": {
+          "Id": {
+            "N.$": "$.MyInput.itemId"
+          }
+        },
+        "ProjectionExpression": "Id, Price",
+        "ReturnConsumedCapacity": "TOTAL"
+      },
+      "TimeoutSeconds": 5,
+      "ResultPath": "$.DynamoDBOutput",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "DynamoDB.AmazonDynamoDBException",
+            "States.Runtime"
+          ],
+          "ResultPath": "$.Error",
+          "Next": "Notify on Error"
+        }
+      ],
+      "Next": "Lookup Data"
+    },
+    "Lookup Data": {
+      "Comment": "The reason we use InputPath here is to filter out the output from the previous task. It will be effectively removed from the state machine data. A similar result could be achieved by using OutputPath in the pervious task, but is that case we wouldn't be able to visually inspect the GetItem output.",
+      "Type": "Parallel",
+      "InputPath": "$.MyInput",
+      "Branches": [
+        {
+          "StartAt": "Retrieve Product",
+          "States": {
+            "Retrieve Product": {
+              "Comment": "This OutputPath effectively filters out the input data from the output.",
+              "Type": "Task",
+              "Parameters": {
+                "productId.$": "$.itemId"
+              },
+              "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-GetProduct",
+              "OutputPath": "$.Price",
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "Check Stock",
+          "States": {
+            "Check Stock": {
+              "Type": "Task",
+              "Comment": "The reason we use Parameters here is to perform the input data transformation for the Lambda function. It is visible to the current task only.",
+              "Parameters": {
+                "Id.$": "$.itemId"
+              },
+              "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-GetStockNumber",
+              "ResultPath": "$.stock",
+              "End": true
+            }
+          }
+        }
+      ],
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "ValueError"
+          ],
+          "ResultPath": "$.Error",
+          "Next": "Notify on Error"
+        }
+      ],
+      "Next": "Request Approval"
+    },
+    "Notify on Error": {
+      "Comment": "We use this task as a universal exception handler. It expects an Error attribute in the input.",
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
+        "Message.$": "$.Error"
+      },
+      "End": true
+    },
+    "Request Approval": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Comment": "We set ResultPath to null here to discard the result of sending the SNS notification and keep the original input.",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
+        "Message": "Price change approval requested.",
+        "MessageAttributes": {
+          "approval_request": {
+            "DataType": "String",
+            "StringValue": "true"
+          }
+        }
+      },
+      "ResultPath": null,
+      "Next": "Wait For Approval"
+    },
+    "Wait For Approval": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:us-west-2:691995883950:activity:PriceUpdateApproval",
+      "Comment": "This OutputPath effectively replaces the original input array with the output produced by the approver.",
+      "Parameters": {
+        "currentPrice.$": "$[0]",
+        "productId.$": "$[1].itemId",
+        "newPrice.$": "$[1].price",
+        "stock.$": "$[1].stock"
+      },
+      "OutputPath": "$",
+      "Next": "Approved?"
+    },
+    "Approved?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.Approval.approved",
+          "BooleanEquals": true,
+          "Next": "Update Price"
+        },
+        {
+          "Variable": "$.Approval.approved",
+          "BooleanEquals": false,
+          "Next": "Notify on Completion"
+        }
+      ]
+    },
+    "Update Price": {
+      "Type": "Task",
+      "Comment": "We set the ResultPath to null here to discard the result of Lambda function invocation and keep the original input.",
+      "Parameters": {
+        "productId.$": "$.productId",
+        "price.$": "$.newPrice"
+      },
+      "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-UpdatePrice",
+      "ResultPath": null,
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "ValueError"
+          ],
+          "ResultPath": "$.Error",
+          "Next": "Notify on Error"
+        }
+      ],
+      "Next": "Notify on Completion"
+    },
+    "Notify on Completion": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
+        "Message.$": "$.Approval.message"
+      },
+      "Comment": "We set the ResultPath to null here to discard the result of sending the SNS notification and keep the original input.",
+      "ResultPath": null,
+      "End": true
+    }
+  }
+}
