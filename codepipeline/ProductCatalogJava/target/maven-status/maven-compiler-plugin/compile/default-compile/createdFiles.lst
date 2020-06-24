@@ -1,0 +1,5 @@
+com/aws/vokunev/catalog/controller/ProductCatalogServlet.class
+com/aws/vokunev/catalog/data/Product.class
+com/aws/vokunev/catalog/data/ProductDataAccessor.class
+com/aws/vokunev/catalog/data/CatalogItem.class
+com/aws/vokunev/catalog/controller/ProductDetailsServlet.class
