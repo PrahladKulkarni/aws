@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.aws.vokunev.catalog.data.CatalogItem;
 import com.aws.vokunev.catalog.data.ProductDataAccessor;
 
+/**
+ * A controller for the Product Catalog request
+ */
 @WebServlet("/")
 public class ProductCatalogServlet extends HttpServlet {
 

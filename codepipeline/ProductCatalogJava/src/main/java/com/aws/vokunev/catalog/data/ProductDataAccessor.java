@@ -25,8 +25,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 /**
- * This data accessor encapsulates the data access logic from the rest of the
- * application.
+ * This class implements a DAO patetrn for accessing the data.
  */
 public class ProductDataAccessor {
 

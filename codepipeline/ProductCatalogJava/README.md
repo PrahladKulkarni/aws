@@ -2,7 +2,10 @@ A Java-based implementation of the Product Catalog web application.
 ===================================================================
 
 * README.md - this file
-* .githooks - contains the Git hooks for the team to share 
+* .githooks - contains the Git hooks for the team to share. Run the following comand to make git recognize it as a hooks directory:
+```
+$ git config --local core.hooksPath .githooks/
+```
 * appspec.yml - this file is used by AWS CodeDeploy when deploying the web
   application to EC2
 * buildspec.yml - this file is used by AWS CodeBuild to build the web
