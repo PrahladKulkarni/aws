@@ -52,12 +52,14 @@
             <td><b>Year:</b></td><td>${product.year}</td>
           </tr>
           <tr>
-            <td><b>Price:</b></td><td>${product.price}</td>
+            <td><b>Price:</b></td><td>$${product.price}</td>
           </tr>
         </table>
       </td>
-      <td style="text-align: center; vertical-align: middle;">
-        <img width="500" src="${product.image}" alt="product image"/>
+      <td>
+        <div style="text-align: left; vertical-align: top; padding-left: 20px;">
+          <img width="500" src="${product.image}" alt="product image"/>
+        </div>
       </td>
     </tr>
   </table>

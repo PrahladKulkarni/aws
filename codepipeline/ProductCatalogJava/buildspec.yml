@@ -1,17 +1,20 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - mvn clean compile test
   build:
     commands:
+      - mvn clean test-compile
       - mvn package -Dmaven.test.skip=true
+      - rm target/prodcatalog.war      
+      - ls -R
 artifacts:
-  type: zip
   files:
     - 'appspec.yml'
-    - 'template.yml'
+    - 'pom.xml'
+    - 'Dockerfile'
     - 'scripts/*'
-    - 'target/ROOT.war'
-    - 'template-configuration.json'
+    - 'target/**/*'
+cache:
+  paths:
+    - '/root/.m2/**/*' 
+    

@@ -16,13 +16,13 @@ public class Product extends CatalogItem {
     public Product() {
     }
 
-    public Product(int year, String description, String productCategory, String title, String image, float price, int id) {
-        super(year, description, productCategory, title, image, price, id);
+    public Product(int year, String description, String productCategory, String title, String image, float price, int qty, int id) {
+        super(year, description, productCategory, title, image, price, qty, id);
     }
 
     public void addProperty(String key, String value) {
         // perform case-insensitive match against the core properties
-        if (key.matches("(?i:year|description|productCategory|title|image|price|id)")) {
+        if (key.matches("(?i:year|description|productCategory|title|image|bucket|price|id)")) {
             // skip the property
             return;
         }

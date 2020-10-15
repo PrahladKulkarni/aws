@@ -34,7 +34,7 @@ public class ProductDataAccessorTest {
 
     @Test
     @DisplayName("Test for retrieving product catalog data")
-    void testProductCatalog() {
+    void testDataAccessor() {
         List<CatalogItem> catalog = ProductDataAccessor.getProductCatalog();
         assertNotNull(catalog);
         assertTrue(catalog.size() > 0);
@@ -43,7 +43,8 @@ public class ProductDataAccessorTest {
     @Test
     @DisplayName("Test for retrieving product object")
     void testExistingProduct() {
-        Product product = ProductDataAccessor.getProduct(213);
+        // Product id -1 is a special test case, the data accessor retrieves the first available product
+        Product product = ProductDataAccessor.getProduct(-1);
         assertNotNull(product);
     }    
 
@@ -51,7 +52,7 @@ public class ProductDataAccessorTest {
     @DisplayName("Test for retrieving product object")
     void testNonexistingProduct() {
         try {
-            Product product = ProductDataAccessor.getProduct(913);
+            ProductDataAccessor.getProduct(-100);
             Assert.fail("Expected an exception for a non-exiting product");
         } catch (Exception ex) {}
     }    

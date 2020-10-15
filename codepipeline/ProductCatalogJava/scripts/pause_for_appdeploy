@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Pause for 10sec to let Tomcat redeploy the application.";
+sleep 10s

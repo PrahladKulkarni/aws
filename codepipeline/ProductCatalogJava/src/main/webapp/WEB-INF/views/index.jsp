@@ -9,7 +9,7 @@
       background-color:white;
     }
     table tbody tr:nth-child(even){
-      background-color:lightblue;
+      background-color: lightblue;
       color:black;
     }    
     table td {
@@ -19,8 +19,13 @@
     th {
       text-align:left;
     }
-    .priceUpdate {
+    .priceIncrease {
       color: red;
+      text-decoration: line-through;
+    }
+    .priceDrop {
+      color: blue;
+      text-decoration: line-through;
     }
   </style>
   <title>Sample Application - Product Catalog</title>
@@ -33,20 +38,34 @@
     <th>Year</th>
     <th>Title</th>
     <th>Category</th>
+    <th>Inventory</th>
     <th>Price</th>
-    <th>Recent Updates</th>
+    <th>Price Trend</th>
     <c:forEach items="${catalog}" var="item">
       <tr>
         <td><a href="product?id=${item.id}" target="_blank">${item.id}</a></td>
         <td>${item.year}</td>
         <td>${item.title}</td>
         <td>${item.productCategory}</td>
+        <td>
+          <div style="text-align: right;">          
+            ${item.qty}
+          </div>  
+        </td>
         <td>$${item.price}</td>
-        <td class="priceUpdate">
+        <td>
           <c:if test="${item.oldPrice > 0}">
             <c:choose>
-              <c:when test="${item.price > item.oldPrice}">Up from $${item.oldPrice}</c:when>
-              <c:otherwise>Down from $${item.oldPrice}</c:otherwise>
+              <c:when test="${item.price > item.oldPrice}">
+                <div class="priceIncrease">  
+                  $${item.oldPrice}
+                </div>
+              </c:when>
+              <c:otherwise>
+                <div class="priceDrop">  
+                  $${item.oldPrice}
+                </div>
+              </c:otherwise>
            </c:choose>
           </c:if>
         </td>

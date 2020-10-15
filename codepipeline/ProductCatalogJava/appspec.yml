@@ -1,17 +1,21 @@
 version: 0.0
 os: linux
 files:
-  - source: target/ROOT.war
+  - source: target/prodcatalog.war
     destination: /home/ec2-user/javaapp
 hooks:
   AfterInstall:
     - location: scripts/install_dependencies
       timeout: 300
       runas: root
+  ApplicationStart:
     - location: scripts/restart_server
+      timeout: 300
+      runas: root
+    - location: scripts/pause_for_appdeploy
       timeout: 300
       runas: root
   ValidateService:
     - location: scripts/test_web_app
       timeout: 300
-      runas: root
+      runas: root      

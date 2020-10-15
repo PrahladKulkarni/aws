@@ -10,20 +10,22 @@ public class CatalogItem implements Comparable<CatalogItem>{
     private String productCategory;
     private String title;
     private String image;
-    private float price;
-    private float oldPrice = -1.0f;
+    private int qty;
+    private double price;
+    private double oldPrice = -1.0f;
     private int id;
 
     public CatalogItem() {
     }
 
-    public CatalogItem(int year, String description, String productCategory, String title, String image, float price, int id) {
+    public CatalogItem(int year, String description, String productCategory, String title, String image, float price, int qty, int id) {
         this.year = year;
         this.description = description;
         this.productCategory = productCategory;
         this.title = title;
         this.image = image;
         this.price = price;
+        this.qty = qty;
         this.id = id;
     }
 
@@ -67,12 +69,20 @@ public class CatalogItem implements Comparable<CatalogItem>{
         this.image = image;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return this.price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getQty() {
+        return this.qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     public int getId() {
@@ -108,7 +118,7 @@ public class CatalogItem implements Comparable<CatalogItem>{
         return this;
     }
 
-    public CatalogItem price(float price) {
+    public CatalogItem price(double price) {
         this.price = price;
         return this;
     }
@@ -118,11 +128,11 @@ public class CatalogItem implements Comparable<CatalogItem>{
         return this;
     }
 
-    public float getOldPrice() {
+    public double getOldPrice() {
         return oldPrice;
     }
 
-    public void setOldPrice(float oldPrice) {
+    public void setOldPrice(double oldPrice) {
         this.oldPrice = oldPrice;
     }
     
@@ -136,6 +146,7 @@ public class CatalogItem implements Comparable<CatalogItem>{
             ", image='" + getImage() + "'" +
             ", price='" + getPrice() + "'" +
             ", oldPrice='" + getOldPrice() + "'" +
+            ", qty='" + getQty() + "'" +            
             ", id='" + getId() + "'" +
             "}";
     }
