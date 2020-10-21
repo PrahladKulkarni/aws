@@ -6,12 +6,10 @@ A Java-based implementation of the Product Catalog web application.
 ```
 $ git config --local core.hooksPath .githooks/
 ```
-* appspec.yml - this file is used by AWS CodeDeploy when deploying the web
-  application to EC2
-* buildspec.yml - this file is used by AWS CodeBuild to build the web
-  application
+* appspec.yml - this file is used by AWS CodeDeploy when deploying this application to EC2
+* buildspec.yml - this file is used by AWS CodeBuild to build this application
 * pom.xml - Maven Project Object Model for the web application
 * src/main - contains Java service source files
 * src/test - contains Java service unit test files
-* scripts/ - contains scripts used by AWS CodeDeploy when
-  installing and deploying the application on the Amazon EC2 instance
+* src/main/java/endpoints.properties - contains URLs of HTTP API service endpoints. This file is initialized during the release stage by the scripts/configure_release script
+* scripts/ - contains scripts used by AWS CodeDeploy when installing and deploying this application to EC2 instance
