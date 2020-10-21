@@ -1,6 +1,7 @@
 {
-  "MyInput": {
-    "itemId": "202",  
-    "price": 1300
+  "MyData": {
+    "productId": "204",  
+    "price": 1300,
+    "environment": "PRODUCTION"
   }
 }

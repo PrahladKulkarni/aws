@@ -1,19 +1,62 @@
 {
-  "Comment": "This state machine represents a product price update approval workflow.",
-  "StartAt": "Get Product Item",
+  "Comment": "This state machine implements a product price update approval workflow.",
+  "StartAt": "Validate Environment",
   "States": {
-    "Get Product Item": {
-      "Comment": "This task is an example of a direct call to DynamoDB API. It could be used to validate the product id, but there is no easy way to check for the presence of an Item attribute in the output. Therefore we'll have to do it in the Lambda function.",
+    "Validate Environment": {
+      "Comment": "Check the correct environment reference.",
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.MyData.environment",
+          "StringEquals": "QA",
+          "Next": "Select QA"
+        },
+        {
+          "Variable": "$.MyData.environment",
+          "StringEquals": "PRODUCTION",
+          "Next": "Select PRODUCTION"
+        }
+      ],
+      "Default": "Invalid Environment"
+    },
+    "Select QA": {
+      "Comment": "Selects a DynamoDB table name for the QA environment.",
+      "Type": "Pass",
+      "Result": {
+        "table": "ProductCatalog-QA"
+      },
+      "ResultPath": "$.DynamoDBInput",
+      "Next": "Fetch Product"
+    },
+    "Select PRODUCTION": {
+      "Comment": "Selects a DynamoDB table name for the PRODUCTION environment.",
+      "Type": "Pass",
+      "Result": {
+        "table": "ProductCatalog"
+      },
+      "ResultPath": "$.DynamoDBInput",
+      "Next": "Fetch Product"
+    },
+    "Invalid Environment": {
+      "Type": "Pass",
+      "Result": {
+        "Error": "An invalid environment is specified in the execution input. Valid entries: 'QA', 'PRODUCTION'."
+      },
+      "ResultPath": "$.Error",
+      "Next": "Notify on Error"
+    },
+    "Fetch Product": {
+      "Comment": "This task is an example of a direct call to DynamoDB API. It simply tries to fetch an Item element from the DynamoDB response. Notice the 'TableName.$:' syntax. Appending .$ to the parameter name tells Step Functions to expect a path.",
       "Type": "Task",
       "Resource": "arn:aws:states:::dynamodb:getItem",
       "Parameters": {
-        "TableName": "ProductCatalog",
+        "TableName.$": "$.DynamoDBInput.table",
         "Key": {
           "Id": {
-            "N.$": "$.MyInput.itemId"
+            "N.$": "$.MyData.productId"
           }
         },
-        "ProjectionExpression": "Id, Price",
+        "ProjectionExpression": "Id",
         "ReturnConsumedCapacity": "TOTAL"
       },
       "TimeoutSeconds": 5,
@@ -21,46 +64,65 @@
       "Catch": [
         {
           "ErrorEquals": [
-            "DynamoDB.AmazonDynamoDBException",
-            "States.Runtime"
+            "DynamoDB.AmazonDynamoDBException"
           ],
           "ResultPath": "$.Error",
           "Next": "Notify on Error"
         }
       ],
-      "Next": "Lookup Data"
+      "Next": "Validate Product"
+    },
+    "Validate Product": {
+      "Comment": "Checks if the DynamoDB response contains an Item element. If present, it implies the product exists in the given environment",
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.DynamoDBOutput.Item",
+          "IsPresent": true,
+          "Next": "Lookup Data"
+        }
+      ],
+      "Default": "Invalid Product"
+    },
+    "Invalid Product": {
+      "Type": "Pass",
+      "Result": {
+        "Error": "The specified product doesn't exist in the specified  environment."
+      },
+      "ResultPath": "$.Error",
+      "Next": "Notify on Error"
     },
     "Lookup Data": {
       "Comment": "The reason we use InputPath here is to filter out the output from the previous task. It will be effectively removed from the state machine data. A similar result could be achieved by using OutputPath in the pervious task, but is that case we wouldn't be able to visually inspect the GetItem output.",
       "Type": "Parallel",
-      "InputPath": "$.MyInput",
+      "InputPath": "$.MyData",
+      "ResultPath": "$.MyData.computed",
+      "OutputPath": "$.MyData",
       "Branches": [
         {
-          "StartAt": "Retrieve Product",
+          "StartAt": "Get Current Price",
           "States": {
-            "Retrieve Product": {
-              "Comment": "This OutputPath effectively filters out the input data from the output.",
+            "Get Current Price": {
+              "Comment": "The ResultSelector picks out the specific attribute we need from the result.",
               "Type": "Task",
-              "Parameters": {
-                "productId.$": "$.itemId"
-              },
               "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-GetProduct",
-              "OutputPath": "$.Price",
+              "ResultSelector": {
+                "currentPrice.$": "$.Price"
+              },
+              "ResultPath": "$.output",
+              "OutputPath": "$.output",
               "End": true
             }
           }
         },
         {
-          "StartAt": "Check Stock",
+          "StartAt": "Get Items Sold",
           "States": {
-            "Check Stock": {
+            "Get Items Sold": {
               "Type": "Task",
-              "Comment": "The reason we use Parameters here is to perform the input data transformation for the Lambda function. It is visible to the current task only.",
-              "Parameters": {
-                "Id.$": "$.itemId"
-              },
-              "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-GetStockNumber",
-              "ResultPath": "$.stock",
+              "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-ItemsSold",
+              "ResultPath": "$.output.itemsSold",
+              "OutputPath": "$.output",
               "End": true
             }
           }
@@ -77,23 +139,13 @@
       ],
       "Next": "Request Approval"
     },
-    "Notify on Error": {
-      "Comment": "We use this task as a universal exception handler. It expects an Error attribute in the input.",
-      "Type": "Task",
-      "Resource": "arn:aws:states:::sns:publish",
-      "Parameters": {
-        "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
-        "Message.$": "$.Error"
-      },
-      "End": true
-    },
     "Request Approval": {
       "Type": "Task",
       "Resource": "arn:aws:states:::sns:publish",
-      "Comment": "We set ResultPath to null here to discard the result of sending the SNS notification and keep the original input.",
+      "Comment": "We set the ResultPath to null here to discard the result of sending the SNS notification and keep the original input.",
       "Parameters": {
         "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
-        "Message": "Price change approval requested.",
+        "Message.$": "States.Format('A price change approval requested for the product {} in the amount of ${}.', $.productId, $.price)",
         "MessageAttributes": {
           "approval_request": {
             "DataType": "String",
@@ -107,13 +159,11 @@
     "Wait For Approval": {
       "Type": "Task",
       "Resource": "arn:aws:states:us-west-2:691995883950:activity:PriceUpdateApproval",
-      "Comment": "This OutputPath effectively replaces the original input array with the output produced by the approver.",
+      "TimeoutSeconds": 30,
       "Parameters": {
-        "currentPrice.$": "$[0]",
-        "productId.$": "$[1].itemId",
-        "newPrice.$": "$[1].price",
-        "stock.$": "$[1].stock"
+        "data.$": "$"
       },
+      "ResultPath": "$.approval",
       "OutputPath": "$",
       "Next": "Approved?"
     },
@@ -121,12 +171,12 @@
       "Type": "Choice",
       "Choices": [
         {
-          "Variable": "$.Approval.approved",
+          "Variable": "$.approval.approved",
           "BooleanEquals": true,
           "Next": "Update Price"
         },
         {
-          "Variable": "$.Approval.approved",
+          "Variable": "$.approval.approved",
           "BooleanEquals": false,
           "Next": "Notify on Completion"
         }
@@ -135,10 +185,6 @@
     "Update Price": {
       "Type": "Task",
       "Comment": "We set the ResultPath to null here to discard the result of Lambda function invocation and keep the original input.",
-      "Parameters": {
-        "productId.$": "$.productId",
-        "price.$": "$.newPrice"
-      },
       "Resource": "arn:aws:lambda:us-west-2:691995883950:function:ProductCatalog-UpdatePrice",
       "ResultPath": null,
       "Catch": [
@@ -152,12 +198,22 @@
       ],
       "Next": "Notify on Completion"
     },
+    "Notify on Error": {
+      "Comment": "We use this task as a universal exception handler. It expects an Error attribute in the input.",
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
+        "Message.$": "$.Error"
+      },
+      "End": true
+    },
     "Notify on Completion": {
       "Type": "Task",
       "Resource": "arn:aws:states:::sns:publish",
       "Parameters": {
         "TopicArn": "arn:aws:sns:us-west-2:691995883950:DevTopic",
-        "Message.$": "$.Approval.message"
+        "Message.$": "$.approval.message"
       },
       "Comment": "We set the ResultPath to null here to discard the result of sending the SNS notification and keep the original input.",
       "ResultPath": null,

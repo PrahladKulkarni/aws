@@ -1,0 +1,17 @@
+{
+  "productId": "353",
+  "price": 499,
+  "environment": "QA",
+  "computed": [
+    {
+      "currentPrice": 399.78
+    },
+    {
+      "itemsSold": 0
+    }
+  ],
+  "approval": {
+    "approved": true,
+    "message": "Price increase from 399.78 to 499.0 for the product 353 approved."
+  }
+}
