@@ -1,0 +1,84 @@
+#!/bin/sh
+SUCCESS=0
+FAILURE=1
+ERROR=`tput setaf 1`
+
+#
+# This hook script executes before the code is pushed to the remote repository.
+# It performs the following steps:
+# - builds and deploys the application locally
+# - performs a functionsl test against a locally deployed application
+# - builds a container image with the updated application code
+# - spins up new container 
+# - performs a functionsl test against a containerized application
+#
+# The same test suite will be run on a server in accordance with
+# appspec.yml/ValidateService  
+# 
+
+# Compile code
+mvn clean compile
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Push aborted: failed to compile source code."; exit $FAILURE
+fi
+
+sh scripts/configure_release
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Push aborted: failed to configure the release."; exit $FAILURE
+fi
+
+echo "The release is configured.";
+
+# Run unit tests
+mvn test
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Push aborted: failed to pass unit tests."; exit $FAILURE
+fi
+
+# Check if Tomcat is configured locally
+if [ -z "$CATALINA_HOME" ]
+then       
+  echo "${ERROR}Push aborted: CATALINA_HOME env variable is not configured."; exit $FAILURE
+fi
+
+# Check if Tomcat is running
+curl -s http://localhost/ > /dev/null
+res=$?
+if test "$res" != "0"; then
+   echo "${ERROR}Push aborted: unable to reach local Tomcat."; exit $FAILURE
+fi
+
+# Deploy the application
+mvn package -Dmaven.test.skip=true
+#sudo rm -rf ${CATALINA_HOME}/webapps/ROOT
+cp ./target/prodcatalog.war ${CATALINA_HOME}/webapps
+
+echo "Pausing for 15sec to let Tomcat redeploy the application.";
+sleep 15s
+
+# Execute the same functional test as in remote deployment
+sh scripts/test_web_app 80
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Push aborted: failed to pass functional tests."; exit $FAILURE
+fi
+
+echo "Building a Docker image.${DEFAULT}";
+
+# Build a new Docker image
+docker build -t prod_catalog_img  .
+# Make sure no previous versions of the container are running (suppress the sdtout and stderr messages and continue on error)
+docker stop prod_catalog_ctr > /dev/null 2>&1 || true
+docker container rm prod_catalog_ctr > /dev/null 2>&1 || true
+# Spin up a new container instance making the local IAM credentials available via a volume mount
+docker container run -v ~/.aws/credentials:/root/.aws/credentials:ro -d --name prod_catalog_ctr -p 8081:8080 prod_catalog_img
+
+echo "Pausing for 5sec to let Docker spin up the container.";
+sleep 5s
+
+# Execute the same functional test as for the non-containerized version of the app 
+sh scripts/test_web_app 8081
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Push aborted: the container has failed to pass functional tests."; exit $FAILURE
+fi
+
+exit $SUCCESS
