@@ -3,8 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
-      - mvn clean compile
-      - mvn test
+      - mvn clean test-compile
       - mvn package -Dmaven.test.skip=true
       - rm target/prodcatalog.war      
       - ls -R
@@ -18,9 +17,4 @@ artifacts:
 cache:
   paths:
     - '/root/.m2/**/*' 
-reports:
-  surefire-reports:
-    files:
-    - "target/surefire-reports/TEST-com.aws.vokunev.catalog.data.ProductDataAccessorTest.xml"
-    file-format: "JINITXML"
     
