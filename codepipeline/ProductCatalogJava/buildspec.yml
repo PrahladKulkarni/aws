@@ -3,7 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
-      - mvn clean test-compile
+      - mvn clean compile
+      - mvn test
       - mvn package -Dmaven.test.skip=true
       - rm target/prodcatalog.war      
       - ls -R
