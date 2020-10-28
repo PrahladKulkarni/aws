@@ -53,7 +53,7 @@ mvn package -Dmaven.test.skip=true
 #sudo rm -rf ${CATALINA_HOME}/webapps/ROOT
 cp ./target/prodcatalog.war ${CATALINA_HOME}/webapps
 
-echo "Pausing for 10sec to let Tomcat redeploy the application.";
+echo "Pausing for 15sec to let Tomcat redeploy the application.";
 sleep 15s
 
 # Execute the same functional test as in remote deployment

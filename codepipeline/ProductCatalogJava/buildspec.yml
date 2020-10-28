@@ -17,4 +17,9 @@ artifacts:
 cache:
   paths:
     - '/root/.m2/**/*' 
+reports:
+  surefire-reports:
+    files:
+    - "target/surefire-reports/TEST-com.aws.vokunev.catalog.data.ProductDataAccessorTest.xml"
+    file-format: "JINITXML"
     
