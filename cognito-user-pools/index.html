@@ -1,0 +1,35 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Cognito User</title>
+</head>
+
+<body>
+    <h2>Cognito User Pools Id Token</h2>
+
+    <p id="id_token_raw" style="white-space:pre-line; width: 1200px; word-wrap: break-word; color: blue;"></p>
+    <pre id="id_token" style="width: 1200px;"></pre>
+
+    <form>
+        <p>
+            <label>API Endpoint</label><br>
+            <input style="width: 800px;" type="text" id="endpoint">
+        </p>
+        <p>
+            <input type="button" value="Send HTTP GET" onclick="invokeAPI();">
+        </p>
+    </form>
+
+    <textarea id="result" style="color: blue; width: 1200px; border:none;" readonly="true"></textarea>
+
+    <script language="JavaScript" type="text/javascript"
+        src="https://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js">
+        </script>
+    <script src="js/verifier.js"></script>
+    <script src="js/userprofile.js"></script>
+</body>
+
+</html>
