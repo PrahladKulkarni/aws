@@ -9,7 +9,7 @@
       background-color:white;
     }
     table tbody tr:nth-child(even){
-      background-color: lightcoral;
+      background-color: lightblue;
       color:black;
     }    
     table td {
