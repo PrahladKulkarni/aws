@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<catalog environment="PRODUCTION">
+    <product id="206" price="3499.99">
+        <title>Starboard All Star, Carbon Sandwich, 14.0" x 24.5"</title>
+        <description>From progressive level riders to elite racers. The All Star is the world's most successful, user-friendly and versatile race design. </description>
+        <category>Standup Paddle Board</category>
+        <year>2018</year>
+        <price>3499.99</price>
+        <qty>110</qty>        
+        <image>https://product-catalog-images.s3.amazonaws.com/starboard_all_star_14_x_245_2018.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA2CHRLHGXHFXAH45Y%2F20201124%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20201124T024449Z&X-Amz-Expires=30&X-Amz-SignedHeaders=host&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEFMaCXVzLXdlc3QtMiJHMEUCIHoEbAFXPVkzfCnLT1lLp6NSN0pN0YZCxG5k63zgwsgiAiEA%2BdadHQ4LjtSFcRL3KY2wprcgtD0F9CC%2BWEZctI%2FApe4q4QEIzP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FARABGgw2OTE5OTU4ODM5NTAiDMrneBrjG8W%2BHz9%2BDCq1Af9WKEVOpj5%2FPZH4QtZfo0j5340UrDFLq04HRijVZIpP5pulrmr4wqnuFxI%2FxoiY17xDxO7p2ezI6vT5lclJggMJQkgaXtHu4GzQh2u3q3uOxL64cdkhyEJ18jm9dKSYLIzNd2pwVuw0%2FBRcT3ArpzbIUyhz%2FKoNWrZW7GKVkPB7nEeVo0nSR74e8Yxh6pNWJu23RhEaWnOhgZPvk8InCzjCOhxbPl%2F7P4aQAtiIe4RnCf7GDpgwoOfx%2FQU64AHQaysXgk3dGxBdeqzEYuE1EBxKgbFFKsG8N8KYCLrr9aFjv1hQ%2Fzy4Yi4HP5mq6h4Y1KV%2FYHApRfrV%2BawrNOjU6hneFcWFkoBWw2Cx5g91xHF68NI1HASuwcaG0S2dG5rY4po1PM13w766csAl17uz3xYkrTwXsuS6RiC6iiJXiniQ%2BE4gOXIvQMqOJrvaQ8lFxqZVltq55MzoeHlFFC0fAQLcAD0O9%2BMVV1dY16RBVUFtMFi17sadaAdtf8kxBnADNQ3Y%2FaI84p5CsCOTgci2tqVEgOgbalz7L4Jgg%2BE2VQ%3D%3D&X-Amz-Signature=a1637b40d96bba5595de622987b31abd752344a256f74a9180c8cce6b202cb3c</image>
+    </product>
+</catalog>

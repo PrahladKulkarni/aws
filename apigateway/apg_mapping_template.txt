@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+#set($inputRoot = $input.path('$'))
+<catalog environment="${stageVariables.environment}">
+#if($inputRoot != "")
+    <product id="$inputRoot.Id" price="$inputRoot.Price">
+        <title>$inputRoot.Title</title>
+        <description>$inputRoot.Description</description>
+        <category>$inputRoot.ProductCategory</category>
+        <year>$inputRoot.Year</year>
+        <price>$inputRoot.Price</price>
+        <qty>$inputRoot.Qty</qty>        
+        <image>$inputRoot.Image</image>
+    </product>
+#else
+    <productNotFound id="$input.params('id')"/>
+#end
+</catalog>
