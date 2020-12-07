@@ -9,7 +9,7 @@
       background-color:white;
     }
     table table tbody tr:nth-child(odd){
-      background-color: lightgreen;
+      background-color: lightblue;
       color:black;
     }
     table td {
