@@ -62,6 +62,8 @@ if [[ "$?" -ne 0 ]] ; then
   echo "${ERROR}Push aborted: failed to pass functional tests."; exit $FAILURE
 fi
 
+exit $SUCCESS
+
 echo "Building a Docker image.${DEFAULT}";
 
 # Build a new Docker image
