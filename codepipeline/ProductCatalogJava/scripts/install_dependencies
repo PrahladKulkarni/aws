@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/ec2-user/javaapp
-wget https://muug.ca/mirror/apache-dist/tomcat/tomcat-9/v9.0.37/bin/apache-tomcat-9.0.37.tar.gz
+wget https://d1f28333hybq4l.cloudfront.net/apache-tomcat-9.0.38.tar.gz
 mkdir /opt/tomcat
 tar xvf apache-tomcat-9*tar.gz -C /opt/tomcat --strip-components=1
 cd /opt/tomcat
