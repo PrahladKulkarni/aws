@@ -19,6 +19,12 @@
     th {
       text-align:left;
     }
+    .metadata {
+      border-style: solid;
+      border-width: medium;
+      border-color: red;
+      padding: 10px;
+    }
     .priceIncrease {
       color: red;
       text-decoration: line-through;
@@ -32,6 +38,13 @@
 </head>
 
 <body>
+  <c:if test="${not empty metadata}">
+    <div class="metadata">
+      <strong>Instance ID:</strong> ${metadata.instance_id}
+      <br>
+      <strong>Instance AZ:</strong> ${metadata.availability_zone}  
+    </div>
+  </c:if>  
   <h1>Product Catalog</h1>
   <table>
     <th>ID</th>

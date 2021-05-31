@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aws.vokunev.catalog.data.CatalogItem;
+import com.aws.vokunev.catalog.data.InstanceMetadata;
+import com.aws.vokunev.catalog.data.InstanceMetadataAccessor;
 import com.aws.vokunev.catalog.data.ProductDataAccessor;
 
 /**
@@ -24,8 +26,18 @@ public class ProductCatalogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Retrieve the list of catalog items
         List<CatalogItem> catalog = ProductDataAccessor.getProductCatalog();
+        // Retrieve the instance metadata
+        //InstanceMetadata metadata = InstanceMetadataAccessor.getInstanceMetadata();
+
+        InstanceMetadata metadata = new InstanceMetadata();
+        metadata.setInstance_id("1234567890qwerty");
+        metadata.setAvailability_zone("us-west2a");
+        System.out.println(metadata);
+
         // Make the model available to the view        
         request.setAttribute("catalog", catalog);
+        request.setAttribute("metadata", metadata);
+
         // Forward control to the view
         request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
     }

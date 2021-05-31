@@ -11,16 +11,10 @@ import java.util.Properties;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-
 /**
  * This class implements a DAO patetrn for accessing the data.
  */
-public class ProductDataAccessor {
+public class ProductDataAccessor extends APIDataAccessor {
 
     // Load configuration data for this data accessor
     private static final Properties endpoints = new Properties();
@@ -111,38 +105,5 @@ public class ProductDataAccessor {
         System.out.println(product);
 
         return product;
-    }
-
-    private static String invokeGetAPIRequest(String url) {
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet(url);
-
-        try {
-            // Send Get request 
-            CloseableHttpResponse response = httpClient.execute(request);
-
-            // Log the HttpResponse Status
-            System.out.println(response.getStatusLine().toString());
-
-            // Process the response
-            String result = EntityUtils.toString(response.getEntity());
-            if (result == null) {
-                throw new RuntimeException("Unexpected null value for API response entity.");
-            } 
-
-            try {
-                String error = JsonPath.read(result, "$.errorMessage");
-                throw new RuntimeException(error);
-            } catch (com.jayway.jsonpath.PathNotFoundException ex) {
-                // No error was returned, which is good, we can continue
-            }
-    
-            // Parse the content
-            return result;
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
     }
 }
