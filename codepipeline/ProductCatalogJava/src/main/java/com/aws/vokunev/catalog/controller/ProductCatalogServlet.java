@@ -27,12 +27,7 @@ public class ProductCatalogServlet extends HttpServlet {
         // Retrieve the list of catalog items
         List<CatalogItem> catalog = ProductDataAccessor.getProductCatalog();
         // Retrieve the instance metadata
-        //InstanceMetadata metadata = InstanceMetadataAccessor.getInstanceMetadata();
-
-        InstanceMetadata metadata = new InstanceMetadata();
-        metadata.setInstance_id("1234567890qwerty");
-        metadata.setAvailability_zone("us-west2a");
-        System.out.println(metadata);
+        InstanceMetadata metadata = InstanceMetadataAccessor.getInstanceMetadata();
 
         // Make the model available to the view        
         request.setAttribute("catalog", catalog);
