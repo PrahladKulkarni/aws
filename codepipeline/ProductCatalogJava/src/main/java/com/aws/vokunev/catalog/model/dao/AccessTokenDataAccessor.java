@@ -11,12 +11,12 @@ import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
 /**
- * This class implements a DAO patetrn for accessing the user data.
+ * This class implements a DAO patetrn for retrieving the OIDC Access token.
  */
 public class AccessTokenDataAccessor {
 
     /**
-     * This method fetches the user data from an OIDC access token forwarded by an
+     * This method attempts to locate and fetch the user data from an OIDC access token forwarded by an
      * Application Load Balancer as per
      * https://docs.aws.amazon.com/elasticloadbalancing/latest/application/x-forwarded-headers.html
      * 
@@ -25,7 +25,11 @@ public class AccessTokenDataAccessor {
     public static AccessToken getToken(HttpServletRequest request) {
         return getToken(request.getHeader("x-amzn-oidc-accesstoken"));
     }
-
+    /**
+     * This method parses provided Base64 encoded OIDC access token.
+     * 
+     * @return an instance of a {@link AccessToken} or null if not available.
+     */
     public static AccessToken getToken(String access_token_encoded) {
 
         System.out.println("access_token_encoded: " + access_token_encoded);
