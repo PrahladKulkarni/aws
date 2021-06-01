@@ -38,7 +38,7 @@
 </head>
 
 <body>
-  <c:if test="${token.isManager}">
+  <c:if test="${token.manager}">
     <c:if test="${not empty metadata}">
       <div class="metadata">
         <strong>Instance ID:</strong> ${metadata.instance_id}
