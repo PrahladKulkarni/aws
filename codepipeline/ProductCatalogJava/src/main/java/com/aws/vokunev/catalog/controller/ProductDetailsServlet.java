@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aws.vokunev.catalog.dao.ProductDataAccessor;
 import com.aws.vokunev.catalog.model.Product;
+import com.aws.vokunev.catalog.model.dao.ProductDataAccessor;
 
 /**
  * A controller for the Product Details request

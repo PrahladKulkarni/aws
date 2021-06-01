@@ -1,4 +1,4 @@
-package com.aws.vokunev.catalog.dao;
+package com.aws.vokunev.catalog.model.dao;
 
 import com.aws.vokunev.catalog.model.AccessToken;
 import javax.servlet.http.HttpServletRequest;

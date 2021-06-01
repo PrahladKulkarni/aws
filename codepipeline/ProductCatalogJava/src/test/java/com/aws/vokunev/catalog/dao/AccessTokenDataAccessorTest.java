@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.aws.vokunev.catalog.model.AccessToken;
+import com.aws.vokunev.catalog.model.dao.AccessTokenDataAccessor;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

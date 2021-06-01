@@ -14,8 +14,8 @@ import javax.servlet.FilterChain;
 
 import com.aws.vokunev.catalog.model.AccessToken;
 import com.aws.vokunev.catalog.model.InstanceMetadata;
-import com.aws.vokunev.catalog.dao.AccessTokenDataAccessor;
-import com.aws.vokunev.catalog.dao.InstanceMetadataAccessor;
+import com.aws.vokunev.catalog.model.dao.AccessTokenDataAccessor;
+import com.aws.vokunev.catalog.model.dao.InstanceMetadataAccessor;
 
 @WebFilter("/AccessTokenFilter")
 public class AccessTokenFilter implements Filter {

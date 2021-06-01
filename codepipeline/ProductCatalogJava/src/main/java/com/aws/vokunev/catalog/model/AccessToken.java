@@ -3,7 +3,8 @@ package com.aws.vokunev.catalog.model;
 import java.util.List;
 
 /**
- * An object of this type represents an application user
+ * An object of this type represents relevant for the application
+ * data from an OIDC Access token.
  */
 public class AccessToken {
 

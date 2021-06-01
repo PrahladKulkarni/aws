@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.aws.vokunev.catalog.model.CatalogItem;
 import com.aws.vokunev.catalog.model.Product;
+import com.aws.vokunev.catalog.model.dao.ProductDataAccessor;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
