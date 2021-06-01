@@ -68,7 +68,7 @@
     </table>
 </c:if>
 <c:if test="${empty product}">
-Product Id=${param.id} not found.
+  <div style="font-size: 120%;">Product Id=${param.id} not found.</div>
 </c:if>
 </body>
 

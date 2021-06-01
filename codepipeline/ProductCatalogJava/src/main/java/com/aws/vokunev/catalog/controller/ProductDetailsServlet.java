@@ -38,6 +38,7 @@ public class ProductDetailsServlet extends HttpServlet {
 
         // Retrieve a product for the provided id
         Product product = ProductDataAccessor.getProduct(productId);
+
         // Make the model available to the view
         request.setAttribute("product", product);
 

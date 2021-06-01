@@ -1,5 +1,6 @@
 package com.aws.vokunev.catalog.dao;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,7 +10,6 @@ import com.aws.vokunev.catalog.model.CatalogItem;
 import com.aws.vokunev.catalog.model.Product;
 import com.aws.vokunev.catalog.model.dao.ProductDataAccessor;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -56,8 +56,8 @@ public class ProductDataAccessorTest {
     @DisplayName("Test for retrieving product object")
     void testNonexistingProduct() {
         try {
-            ProductDataAccessor.getProduct(-100);
-            Assert.fail("Expected an exception for a non-exiting product");
+            Product product = ProductDataAccessor.getProduct(-100);
+            assertNull(product);
         } catch (Exception ex) {}
     }    
 }

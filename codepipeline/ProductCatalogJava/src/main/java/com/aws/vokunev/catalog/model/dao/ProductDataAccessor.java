@@ -76,7 +76,7 @@ public class ProductDataAccessor extends APIDataAccessor {
      * This method fetches a Product for the provided ID.
      * 
      * @param productId product ID
-     * @return an instance of a {@link Product} for the provided ID.
+     * @return an instance of a {@link Product} for the provided ID or null if not found.
      */
     public static Product getProduct(int productId) {
 
@@ -85,8 +85,15 @@ public class ProductDataAccessor extends APIDataAccessor {
         String requestUrl = String.format(requestUrlTemplate, productId);
         // Invoke the API
         String result = invokeGetAPIRequest(requestUrl);
+
+        if(result == null) {
+            // The product is not available
+            return null;
+        } 
+
         // Process the results
         DocumentContext context = JsonPath.parse(result);
+
         // Capture the core properties
         Product product = new Product();
         product.setId(context.read("$.Id", Integer.class));
