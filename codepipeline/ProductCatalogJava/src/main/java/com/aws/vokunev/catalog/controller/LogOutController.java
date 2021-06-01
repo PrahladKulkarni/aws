@@ -19,14 +19,17 @@ public class LogOutController extends HttpServlet {
     
         Cookie cookie1 = new Cookie("AWSELBAuthSessionCookie", "");
         cookie1.setMaxAge(-1);
+        cookie1.setPath("/");        
         response.addCookie(cookie1);
 
         Cookie cookie2 = new Cookie("AWSELBAuthSessionCookie-0", "");
         cookie2.setMaxAge(-1);
+        cookie2.setPath("/");
         response.addCookie(cookie2);
 
         Cookie cookie3 = new Cookie("AWSELBAuthSessionCookie-1", "");
         cookie3.setMaxAge(-1);
+        cookie3.setPath("/");
         response.addCookie(cookie3);
 
         System.out.println("Expiring the ALB cookies...");
