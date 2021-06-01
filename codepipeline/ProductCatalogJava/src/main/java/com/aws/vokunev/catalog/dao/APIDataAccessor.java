@@ -1,4 +1,4 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.dao;
 
 import com.jayway.jsonpath.JsonPath;
 

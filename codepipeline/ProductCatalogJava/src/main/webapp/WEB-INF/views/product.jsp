@@ -1,4 +1,4 @@
-<%@ page import="java.util.ArrayList, com.aws.vokunev.catalog.data.CatalogItem"%>
+<%@ page import="java.util.ArrayList, com.aws.vokunev.catalog.model.CatalogItem"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 

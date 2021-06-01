@@ -1,4 +1,4 @@
-<%@ page import="java.util.ArrayList, com.aws.vokunev.catalog.data.CatalogItem"%>
+<%@ page import="java.util.ArrayList, com.aws.vokunev.catalog.model.CatalogItem"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 
@@ -38,13 +38,16 @@
 </head>
 
 <body>
-  <c:if test="${not empty metadata}">
-    <div class="metadata">
-      <strong>Instance ID:</strong> ${metadata.instance_id}
-      <br>
-      <strong>Instance AZ:</strong> ${metadata.availability_zone}  
-    </div>
+  <c:if test="${token.isManager}">
+    <c:if test="${not empty metadata}">
+      <div class="metadata">
+        <strong>Instance ID:</strong> ${metadata.instance_id}
+        <br>
+        <strong>Instance AZ:</strong> ${metadata.availability_zone}  
+      </div>
+    </c:if>
   </c:if>  
+
   <h1>Product Catalog</h1>
   <table>
     <th>ID</th>

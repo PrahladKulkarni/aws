@@ -1,4 +1,4 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.model;
 
 import java.util.HashMap;
 import java.util.Map;

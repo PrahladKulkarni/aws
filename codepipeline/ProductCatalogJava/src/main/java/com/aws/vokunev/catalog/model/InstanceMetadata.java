@@ -1,4 +1,4 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.model;
 
 /**
  * The object of this type contains (a subset of) EC2 instance metadata.

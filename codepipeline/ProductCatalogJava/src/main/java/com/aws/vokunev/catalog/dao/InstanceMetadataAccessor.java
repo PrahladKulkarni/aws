@@ -1,7 +1,9 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.dao;
+
+import com.aws.vokunev.catalog.model.InstanceMetadata;
 
 /**
- * This class implements a DAO patetrn for accessing the data.
+ * This class implements a DAO patetrn for accessing the EC2 instance metadata.
  */
 public class InstanceMetadataAccessor extends APIDataAccessor {
 

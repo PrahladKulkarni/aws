@@ -1,9 +1,12 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.dao;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+
+import com.aws.vokunev.catalog.model.CatalogItem;
+import com.aws.vokunev.catalog.model.Product;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;

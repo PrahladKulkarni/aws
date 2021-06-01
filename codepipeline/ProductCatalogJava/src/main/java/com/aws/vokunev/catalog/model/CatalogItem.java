@@ -1,4 +1,4 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.model;
 
 /**
  * This class represents a catalog item with the common set of properties.

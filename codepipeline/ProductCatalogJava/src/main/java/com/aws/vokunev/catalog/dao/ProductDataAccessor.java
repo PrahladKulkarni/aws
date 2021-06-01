@@ -1,4 +1,4 @@
-package com.aws.vokunev.catalog.data;
+package com.aws.vokunev.catalog.dao;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.aws.vokunev.catalog.model.CatalogItem;
+import com.aws.vokunev.catalog.model.Product;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
 /**
- * This class implements a DAO patetrn for accessing the data.
+ * This class implements a DAO patetrn for accessing product data.
  */
 public class ProductDataAccessor extends APIDataAccessor {
 
@@ -20,8 +22,8 @@ public class ProductDataAccessor extends APIDataAccessor {
     private static final Properties endpoints = new Properties();
 
     static {
-        try (final InputStream stream =
-                ProductDataAccessor.class.getClassLoader().getResourceAsStream("endpoints.properties")) {
+        try (final InputStream stream = ProductDataAccessor.class.getClassLoader()
+                .getResourceAsStream("endpoints.properties")) {
             endpoints.load(stream);
             System.out.println("Service endpoints configuration loaded: " + endpoints);
         } catch (Exception ex) {
@@ -75,6 +77,7 @@ public class ProductDataAccessor extends APIDataAccessor {
 
     /**
      * This method fetches a Product for the provided ID.
+     * 
      * @param productId product ID
      * @return an instance of a {@link Product} for the provided ID.
      */
