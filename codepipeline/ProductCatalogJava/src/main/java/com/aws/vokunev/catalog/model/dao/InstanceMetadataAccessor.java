@@ -34,8 +34,6 @@ public class InstanceMetadataAccessor extends APIDataAccessor {
             result.setAvailability_zone(instance_az);
         }
 
-        System.out.println(result);
-
         return result;
     }
 }

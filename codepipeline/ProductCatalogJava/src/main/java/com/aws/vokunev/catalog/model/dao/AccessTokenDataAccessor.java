@@ -75,8 +75,6 @@ public class AccessTokenDataAccessor {
             ex.printStackTrace(System.out);
         }
 
-        System.out.println(user);
-
         return user;
     }
 }

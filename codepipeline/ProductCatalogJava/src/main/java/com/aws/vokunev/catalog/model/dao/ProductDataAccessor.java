@@ -64,9 +64,6 @@ public class ProductDataAccessor extends APIDataAccessor {
             }
 
             catalog.add(item);
-
-            // Log the created item
-            System.out.println(item);
         }
 
         // Order the items since the table scan perform no ordering
@@ -105,7 +102,6 @@ public class ProductDataAccessor extends APIDataAccessor {
         for (Map.Entry<String, Object> entry : props.entrySet()) {
             product.addProperty(entry.getKey(), String.valueOf(entry.getValue()));
         }
-        System.out.println(product);
 
         return product;
     }
