@@ -37,7 +37,6 @@
   <title>Sample Application - Product Catalog</title>
 </head>
 
-<body>
   <jsp:include page="logout.jsp" />
   <jsp:include page="metadata.jsp" />
   <h1>Product Catalog</h1>
