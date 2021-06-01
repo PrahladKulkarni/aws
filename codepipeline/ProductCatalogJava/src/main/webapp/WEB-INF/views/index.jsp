@@ -38,16 +38,7 @@
 </head>
 
 <body>
-  <c:if test="${token.manager}">
-    <c:if test="${not empty metadata}">
-      <div class="metadata">
-        <strong>Instance ID:</strong> ${metadata.instance_id}
-        <br>
-        <strong>Instance AZ:</strong> ${metadata.availability_zone}  
-      </div>
-    </c:if>
-  </c:if>  
-
+  <jsp:include page="metadata.jsp" />
   <h1>Product Catalog</h1>
   <table>
     <th>ID</th>

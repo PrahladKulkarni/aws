@@ -24,6 +24,7 @@
 </head>
 
 <body>
+  <jsp:include page="metadata.jsp" />
   <h1>Product Details</h1>
   <table width="100%">
     <tr>
