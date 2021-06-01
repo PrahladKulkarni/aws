@@ -11,7 +11,7 @@ import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 
 /**
- * This class implements a DAO patetrn for retrieving the OIDC Access token.
+ * This class implements a DAO patetrn for retrieving the OIDC access token.
  */
 public class AccessTokenDataAccessor {
 
@@ -26,7 +26,9 @@ public class AccessTokenDataAccessor {
         return getToken(request.getHeader("x-amzn-oidc-accesstoken"));
     }
     /**
-     * This method parses provided Base64 encoded OIDC access token.
+     * This method parses provided Base64 encoded OIDC access token. Please note
+     * that this is a simplified token consumption algorithm. For the proper token
+     * treatment please refer to: https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-verifying-a-jwt.html
      * 
      * @return an instance of a {@link AccessToken} or null if not available.
      */

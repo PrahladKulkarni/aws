@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * An object of this type represents relevant for the application
- * data from an OIDC Access token.
+ * data from an OIDC access token.
  */
 public class AccessToken {
 
@@ -44,6 +44,9 @@ public class AccessToken {
         return "User [groups=" + groups + ", username=" + username + "]";
     }
 
+    /**
+     * @return true if this user is part of the managers group, otherwise false.
+     */
     public boolean isManager() {
         if (groups == null) {
             return false;
@@ -51,4 +54,26 @@ public class AccessToken {
             return groups.contains("managers"); 
         }
     }
+
+    /**
+     * @return true if this user is part of the operations group, otherwise false.
+     */
+    public boolean isOperation() {
+        if (groups == null) {
+            return false;
+        } else {
+            return groups.contains("operations"); 
+        }
+    }
+
+    /**
+     * @return true if this user is part of the engineers group, otherwise false.
+     */
+    public boolean isEngineer() {
+        if (groups == null) {
+            return false;
+        } else {
+            return groups.contains("engineers"); 
+        }
+    }    
 }

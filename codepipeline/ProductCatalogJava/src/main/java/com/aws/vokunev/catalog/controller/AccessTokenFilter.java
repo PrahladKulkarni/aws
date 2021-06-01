@@ -17,6 +17,9 @@ import com.aws.vokunev.catalog.model.InstanceMetadata;
 import com.aws.vokunev.catalog.model.dao.AccessTokenDataAccessor;
 import com.aws.vokunev.catalog.model.dao.InstanceMetadataAccessor;
 
+/**
+ * This web filter initializes common request scope attributes. 
+ */
 @WebFilter("/AccessTokenFilter")
 public class AccessTokenFilter implements Filter {
 
@@ -24,12 +27,11 @@ public class AccessTokenFilter implements Filter {
 
 	public void init(FilterConfig config) throws ServletException {
 		this.context = config.getServletContext();
-		this.context.log("AuthenticationFilter initialized");
+		this.context.log("AccessTokenFilter initialized");
 	}
 
 	/**
-	 * Fetches the OIDC access token from the request and makes it available as a
-	 * request attribute "token"
+	 * Initialize the request scope attributes. 
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -45,9 +47,5 @@ public class AccessTokenFilter implements Filter {
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
-	}
-
-	public void destroy() {
-		// close any resources here
 	}
 }
