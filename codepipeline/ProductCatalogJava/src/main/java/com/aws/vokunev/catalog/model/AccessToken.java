@@ -47,7 +47,7 @@ public class AccessToken {
     /**
      * @return true if this user is part of the managers group, otherwise false.
      */
-    public boolean isManager() {
+    public boolean isManagers() {
         if (groups == null) {
             return false;
         } else {
@@ -58,7 +58,7 @@ public class AccessToken {
     /**
      * @return true if this user is part of the operations group, otherwise false.
      */
-    public boolean isOperation() {
+    public boolean isOperations() {
         if (groups == null) {
             return false;
         } else {
@@ -69,7 +69,7 @@ public class AccessToken {
     /**
      * @return true if this user is part of the engineers group, otherwise false.
      */
-    public boolean isEngineer() {
+    public boolean isEngineers() {
         if (groups == null) {
             return false;
         } else {

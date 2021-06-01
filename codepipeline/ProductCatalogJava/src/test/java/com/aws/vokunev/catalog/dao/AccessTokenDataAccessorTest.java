@@ -40,6 +40,6 @@ public class AccessTokenDataAccessorTest {
         assertNotNull(token);
         assertNotNull(token.getUsername());
         assertNotNull(token.getGroups());
-        assertTrue(token.isManager());
+        assertTrue(token.isManagers());
     }        
 }
