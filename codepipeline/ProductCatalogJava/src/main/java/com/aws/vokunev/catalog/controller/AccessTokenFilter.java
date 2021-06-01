@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.FilterChain;
 
 import com.aws.vokunev.catalog.model.AccessToken;
+import com.aws.vokunev.catalog.model.InstanceMetadata;
 import com.aws.vokunev.catalog.dao.AccessTokenDataAccessor;
+import com.aws.vokunev.catalog.dao.InstanceMetadataAccessor;
 
 @WebFilter("/AccessTokenFilter")
 public class AccessTokenFilter implements Filter {
@@ -26,16 +28,21 @@ public class AccessTokenFilter implements Filter {
 	}
 
 	/**
-	 * Fetches the OIDC access token from the request and makes it available 
-	 * as a request attribute "token" 
+	 * Fetches the OIDC access token from the request and makes it available as a
+	 * request attribute "token"
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
 		// Retrieve access token
 		AccessToken access_token = AccessTokenDataAccessor.getToken((HttpServletRequest) request);
-		// Make the model available to the view
-		((HttpServletRequest) request).setAttribute("token", access_token);
+		// Retrieve the instance metadata
+		InstanceMetadata metadata = InstanceMetadataAccessor.getInstanceMetadata();
+
+		// Share the data through the request scope
+		request.setAttribute("token", access_token);
+		request.setAttribute("metadata", metadata);
+
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

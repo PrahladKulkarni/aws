@@ -21,11 +21,13 @@ public class ProductDetailsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Check if the parameter is present
+        
+        // Validate the product id parameter
         String param = request.getParameter("id");
         if (param == null ) {
             throw new RuntimeException("Error: missing request parameter \"id\"");
         }
+
         // Parse the input parameter as int
         int productId = 0;
         try {
@@ -33,10 +35,12 @@ public class ProductDetailsServlet extends HttpServlet {
         } catch (java.lang.NumberFormatException ex) {
             throw new RuntimeException("Error: unable to parse value " + param + " as integer.");
         }
+
         // Retrieve a product for the provided id
         Product product = ProductDataAccessor.getProduct(productId);
         // Make the model available to the view
         request.setAttribute("product", product);
+
         // Forward control to the view
         request.getRequestDispatcher("/WEB-INF/views/product.jsp").forward(request, response);
     }

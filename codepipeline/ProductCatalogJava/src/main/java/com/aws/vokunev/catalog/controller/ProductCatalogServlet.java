@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aws.vokunev.catalog.dao.InstanceMetadataAccessor;
 import com.aws.vokunev.catalog.dao.ProductDataAccessor;
-import com.aws.vokunev.catalog.model.AccessToken;
 import com.aws.vokunev.catalog.model.CatalogItem;
-import com.aws.vokunev.catalog.model.InstanceMetadata;
 
 /**
  * A controller for the Product Catalog request
@@ -28,12 +25,8 @@ public class ProductCatalogServlet extends HttpServlet {
         
         // Retrieve the list of catalog items
         List<CatalogItem> catalog = ProductDataAccessor.getProductCatalog();
-        // Retrieve the instance metadata
-        InstanceMetadata metadata = InstanceMetadataAccessor.getInstanceMetadata();
-
         // Make the model available to the view        
         request.setAttribute("catalog", catalog);
-        request.setAttribute("metadata", metadata);
 
         // Forward control to the view
         request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
