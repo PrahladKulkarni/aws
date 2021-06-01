@@ -38,11 +38,11 @@ public class AccessTokenFilter implements Filter {
 
 		// Retrieve access token
 		AccessToken access_token = AccessTokenDataAccessor.getToken((HttpServletRequest) request);
-		this.context.log("Access token: " + access_token);
+		System.out.println("Access token: " + access_token);
 
 		// Retrieve the instance metadata
 		InstanceMetadata metadata = InstanceMetadataAccessor.getInstanceMetadata();
-		this.context.log("Instance metadata: " + metadata);
+		System.out.println("Instance metadata: " + metadata);
 
 		// Share the data through the request scope
 		request.setAttribute("token", access_token);
