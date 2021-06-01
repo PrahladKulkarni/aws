@@ -20,8 +20,9 @@ public class LogOutController extends HttpServlet {
         // Locate the ALB cookie
         Cookie[] cookies = request.getCookies();
         for(Cookie cookie: cookies) {
+            System.out.println("Analyzing the cookie: " + cookie.getName());
             if(cookie.getName().startsWith("AWSELBAuthSessionCookie")) {
-                System.out.println("Found an ALB cookie: " + cookie.getName() + ", expiring it now!");
+                System.out.println("This is an ALB cookie, expiring it now!");
                 cookie.setMaxAge(-1);
             }
         }
