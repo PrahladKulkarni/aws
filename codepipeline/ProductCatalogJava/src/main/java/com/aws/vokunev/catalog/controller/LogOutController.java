@@ -21,18 +21,18 @@ public class LogOutController extends HttpServlet {
         cookie1.setMaxAge(-1);
         response.addCookie(cookie1);
 
-        Cookie cookie2 = new Cookie("AWSELBAuthSessionCookie-1", "");
+        Cookie cookie2 = new Cookie("AWSELBAuthSessionCookie-0", "");
         cookie2.setMaxAge(-1);
         response.addCookie(cookie2);
 
-        Cookie cookie3 = new Cookie("AWSELBAuthSessionCookie-2", "");
+        Cookie cookie3 = new Cookie("AWSELBAuthSessionCookie-1", "");
         cookie3.setMaxAge(-1);
         response.addCookie(cookie3);
 
         System.out.println("Expiring the ALB cookies...");
-        System.out.println(cookie1);
-        System.out.println(cookie2);
-        System.out.println(cookie3);
+        System.out.println(cookie1.getName());
+        System.out.println(cookie2.getName());
+        System.out.println(cookie3.getName());
 
         response.sendRedirect("https://auth.cloud101.link/logout?client_id=34fak97jrt25f4bqdvad28rsdd&logout_uri=https://qa.cloud101.link/prodcatalog/");
     }
