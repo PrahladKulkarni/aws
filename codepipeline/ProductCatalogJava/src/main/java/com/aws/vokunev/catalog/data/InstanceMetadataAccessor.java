@@ -6,8 +6,8 @@ package com.aws.vokunev.catalog.data;
 public class InstanceMetadataAccessor extends APIDataAccessor {
 
     /**
-     * This method fetches an EC2 instance metadata.
-     * @param productId product ID
+     * This method fetches the instance metadata in case if the application
+     * has been deployed to an EC2 instance.
      * @return an instance of a {@link InstanceMetadata} or null if not available.
      */
     public static InstanceMetadata getInstanceMetadata() {
