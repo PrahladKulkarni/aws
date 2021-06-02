@@ -1,12 +1,10 @@
 package com.aws.vokunev.catalog.model.dao;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import com.aws.util.Endpoints;
 import com.aws.vokunev.catalog.model.CatalogItem;

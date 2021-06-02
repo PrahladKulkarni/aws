@@ -1,8 +1,6 @@
 package com.aws.vokunev.catalog.controller;
 
-import java.io.InputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

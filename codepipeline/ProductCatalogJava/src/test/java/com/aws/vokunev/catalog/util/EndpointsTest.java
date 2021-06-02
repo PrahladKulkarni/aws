@@ -1,15 +1,8 @@
 package com.aws.vokunev.catalog.util;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
 
 import com.aws.util.Endpoints;
-import com.aws.vokunev.catalog.model.CatalogItem;
-import com.aws.vokunev.catalog.model.Product;
-import com.aws.vokunev.catalog.model.dao.ProductDataAccessor;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
