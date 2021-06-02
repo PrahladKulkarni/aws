@@ -42,7 +42,8 @@ public class LogOutController extends HttpServlet {
         Properties endpoints = new Properties();        
 
         // Retrieve the logout endpoint address
-        String logoutUrl = endpoints.getProperty("product_list");
+        String logoutUrl = endpoints.getProperty("logout");
+        System.out.println("Logout URL retrieved: " + logoutUrl);
 
         response.sendRedirect(logoutUrl);
     }
