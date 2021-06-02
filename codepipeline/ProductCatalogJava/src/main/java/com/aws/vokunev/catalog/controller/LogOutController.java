@@ -1,6 +1,7 @@
 package com.aws.vokunev.catalog.controller;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,6 +38,12 @@ public class LogOutController extends HttpServlet {
         System.out.println(cookie2.getName());
         System.out.println(cookie3.getName());
 
-        response.sendRedirect("https://auth.cloud101.link/logout?client_id=34fak97jrt25f4bqdvad28rsdd&logout_uri=https://qa.cloud101.link/prodcatalog/");
+        // Load configuration data for this servlet
+        Properties endpoints = new Properties();        
+
+        // Retrieve the logout endpoint address
+        String logoutUrl = endpoints.getProperty("product_list");
+
+        response.sendRedirect(logoutUrl);
     }
 }

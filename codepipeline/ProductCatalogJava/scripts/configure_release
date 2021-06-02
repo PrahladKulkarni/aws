@@ -19,4 +19,12 @@ else
   echo product_list="$SERVICE_ENDPOINT_PRODUCT_LIST" >> target/classes/endpoints.properties
 fi
 
+if [[ -z "$SERVICE_ENDPOINT_LOGOUT" ]]; then
+  echo "Environment variable SERVICE_ENDPOINT_LOGOUT is not defined."; exit $FAILURE
+else
+  echo SERVICE_ENDPOINT_LOGOUT="$SERVICE_ENDPOINT_LOGOUT"
+  echo logout="$SERVICE_ENDPOINT_LOGOUT" >> target/classes/endpoints.properties
+fi
+
+
 exit $SUCCESS
