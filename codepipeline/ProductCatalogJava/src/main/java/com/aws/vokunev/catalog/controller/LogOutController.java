@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.aws.util.Endpoints;
 
+/**
+ * This controller handles the logout requests. It performs the logout sequence according to 
+ * https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html
+ * and
+ * https://docs.aws.amazon.com/cognito/latest/developerguide/logout-endpoint.html
+ */
 @WebServlet("/logout")
 public class LogOutController extends HttpServlet {
     
@@ -18,7 +24,8 @@ public class LogOutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    
+
+        // Expire the ALB cookies
         Cookie cookie1 = new Cookie("AWSELBAuthSessionCookie", "");
         cookie1.setMaxAge(-1);
         cookie1.setPath("/");        
