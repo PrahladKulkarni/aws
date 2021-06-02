@@ -40,6 +40,6 @@ public class Endpoints {
      * @return product details service endpoint URL
      */
     public static String getLogoutEndpoint() {
-        return endpoints.getProperty("loogout");
+        return endpoints.getProperty("logout");
     }    
 }
