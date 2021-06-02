@@ -1,5 +1,6 @@
 package com.aws.vokunev.catalog.controller;
 
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -9,6 +10,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.aws.util.Endpoints;
 
 @WebServlet("/logout")
 public class LogOutController extends HttpServlet {
@@ -38,13 +41,7 @@ public class LogOutController extends HttpServlet {
         System.out.println(cookie2.getName());
         System.out.println(cookie3.getName());
 
-        // Load configuration data for this servlet
-        Properties endpoints = new Properties();        
-
-        // Retrieve the logout endpoint address
-        String logoutUrl = endpoints.getProperty("logout");
-        System.out.println("Logout URL retrieved: " + logoutUrl);
-
-        response.sendRedirect(logoutUrl);
+        // Redirect to the logout endpoint address
+        response.sendRedirect(Endpoints.getLogoutEndpoint());
     }
 }

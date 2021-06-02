@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.aws.util.Endpoints;
 import com.aws.vokunev.catalog.model.CatalogItem;
 import com.aws.vokunev.catalog.model.Product;
 import com.jayway.jsonpath.DocumentContext;
@@ -18,20 +19,6 @@ import com.jayway.jsonpath.JsonPath;
  */
 public class ProductDataAccessor extends APIDataAccessor {
 
-    // Load configuration data for this data accessor
-    private static final Properties endpoints = new Properties();
-
-    static {
-        try (final InputStream stream = ProductDataAccessor.class.getClassLoader()
-                .getResourceAsStream("endpoints.properties")) {
-            endpoints.load(stream);
-            System.out.println("Service endpoints configuration loaded: " + endpoints);
-        } catch (Exception ex) {
-            System.out.println("Service endpoints configuration not found.");
-            throw new RuntimeException(ex);
-        }
-    }
-
     /**
      * This method populates a list of {@link CatalogItem} objects from
      * ProductCatalog table.
@@ -41,7 +28,7 @@ public class ProductDataAccessor extends APIDataAccessor {
     public static List<CatalogItem> getProductCatalog() {
 
         // Prepare the request
-        String requestUrl = endpoints.getProperty("product_list");
+        String requestUrl = Endpoints.getProductListEndpoint();
         // Invoke the API
         String result = invokeGetAPIRequest(requestUrl);
         // Process the results
@@ -81,7 +68,7 @@ public class ProductDataAccessor extends APIDataAccessor {
     public static Product getProduct(int productId) {
 
         // Prepare the request
-        String requestUrlTemplate = endpoints.getProperty("product_details").concat("?id=%s");
+        String requestUrlTemplate = Endpoints.getProductDetailsEndpoint().concat("?id=%s");
         String requestUrl = String.format(requestUrlTemplate, productId);
         // Invoke the API
         String result = invokeGetAPIRequest(requestUrl);
