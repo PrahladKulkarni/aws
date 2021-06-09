@@ -18,7 +18,7 @@ public class AccessTokenDataAccessor {
     /**
      * This method attempts to locate and fetch the user data from an OIDC access token forwarded by an
      * Application Load Balancer as per
-     * https://docs.aws.amazon.com/elasticloadbalancing/latest/application/x-forwarded-headers.html
+     * https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html
      * 
      * @return an instance of a {@link AccessToken} or null if not available.
      */
