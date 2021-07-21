@@ -1,0 +1,56 @@
+#!/bin/sh
+SUCCESS=0
+FAILURE=1
+# Colors
+ERROR=`tput setaf 1`
+INFO=`tput setaf 2`
+NORMAL=`tput sgr0`
+
+echo "${INFO}--> Terminating the application if running${NORMAL}"
+killall -9 java
+
+echo "${INFO}--> Compiling the application${NORMAL}"
+mvn clean compile
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Aborted: failed to compile source code.${NORMAL}"; exit $FAILURE
+fi
+
+echo "${INFO}--> Running the unit tests${NORMAL}"
+mvn test -Dtest=UnitTest*
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Aborted: failed to pass the unit tests.${NORMAL}"; exit $FAILURE
+fi
+
+echo "${INFO}--> Configuring the application release${NORMAL}"
+sh scripts/configure_release
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Aborted: failed to configure the release.${NORMAL}"; exit $FAILURE
+fi
+
+echo "${INFO}--> Running the integration tests${NORMAL}"
+mvn test -Dtest=IntegrationTest*
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Aborted: failed to pass the integration tests.${NORMAL}"; exit $FAILURE
+fi
+
+echo "${INFO}--> Packaging the application${NORMAL}"
+mvn package -Dmaven.test.skip=true
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Aborted: failed to pass the integration tests.${NORMAL}"; exit $FAILURE
+fi
+
+echo "${INFO}--> Launching the application in the background${NORMAL}"
+java -jar target/prodcatalog-2.0.0.jar &
+
+echo "${INFO}--> Waiting for the application to be deployed${NORMAL}"
+sleep 10
+
+echo "${INFO}--> Executing the functional tests${NORMAL}"
+sh scripts/test_deployment 80
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Aborted: failed to pass the functional tests.${NORMAL}"; exit $FAILURE
+fi
+
+echo "${INFO}--> Success, local release confirmed${NORMAL}"
+
+exit $SUCCESS

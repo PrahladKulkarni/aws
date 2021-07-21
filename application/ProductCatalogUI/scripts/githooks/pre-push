@@ -1,0 +1,9 @@
+#!/bin/sh
+SUCCESS=0
+FAILURE=1
+
+# Deploy the application locally
+sh scripts/build_release_deploy
+if [[ "$?" -ne 0 ]] ; then
+  echo "${ERROR}Push aborted: failed to deploy the application locally."; exit $FAILURE
+fi

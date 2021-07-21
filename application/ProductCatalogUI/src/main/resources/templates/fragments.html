@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 
+    This page is never displayed directly. It is used as a source of
+    reusable view fragments. Working with Fragments in Thymeleaf:
+    https://www.baeldung.com/spring-thymeleaf-fragments
+-->
+
+<body>
+    <div th:fragment="metadata">
+        <div th:if="${permissions.permittedToAccessMetadata}"
+            style="border-style: solid; border-width: medium; border-color: red; padding: 10px;">
+            <div th:text="'Instance ID: ' + ${metadata.instanceId}" style="font-size: 150%;" />
+            <div th:text="'Instance AZ: ' + ${metadata.availabilityZone}" style="font-size: 150%;" />
+        </div>
+    </div>
+    <div th:fragment="logout">
+        <div th:if="${token} != null" style="text-align: right; font-size: 120%; padding: 10px;">
+            <a href="logout">Sign Out</a>
+        </div>
+    </div>
+</body>

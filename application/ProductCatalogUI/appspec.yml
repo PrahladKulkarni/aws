@@ -1,0 +1,21 @@
+version: 0.0
+os: linux
+files:
+  - source: target/prodcatalog-2.0.0.jar
+    destination: /home/ec2-user
+hooks:
+  AfterInstall:
+    - location: scripts/install_dependencies
+      timeout: 120
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_application
+      timeout: 120
+      runas: root
+    - location: scripts/pause_for_appdeploy
+      timeout: 120
+      runas: root
+  ValidateService:
+    - location: scripts/test_deployment
+      timeout: 120
+      runas: root      

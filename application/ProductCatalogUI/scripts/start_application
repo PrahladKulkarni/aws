@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "--> Terminating the application if running"
+killall -9 java
+echo "--> Launching the application in the background"
+# To avoid error "Script at specified location: scripts/start_application failed to close STDOUT", 
+# see https://docs.aws.amazon.com/codedeploy/latest/userguide/troubleshooting-deployments.html#troubleshooting-long-running-processes
+java -jar /home/ec2-user/prodcatalog-2.0.0.jar > /dev/null 2> /dev/null < /dev/null &

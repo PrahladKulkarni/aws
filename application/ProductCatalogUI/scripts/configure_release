@@ -1,0 +1,30 @@
+#!/bin/bash
+SUCCESS=0
+FAILURE=1
+
+#
+# This script is executed as part of the release stage. It initializes the
+# AWS AppConfig service properties for querying the application configuration.
+#
+if [[ -z "$APPCONFIG_APP" ]]; then
+  echo "Environment variable APPCONFIG_APP is not defined."; exit $FAILURE
+else
+  echo APPCONFIG_APP="$APPCONFIG_APP"
+  echo appconfig.application="$APPCONFIG_APP" > target/classes/release.properties
+fi
+
+if [[ -z "$APPCONFIG_ENV" ]]; then
+  echo "Environment variable APPCONFIG_ENV is not defined."; exit $FAILURE
+else
+  echo APPCONFIG_ENV="$APPCONFIG_ENV"
+  echo appconfig.environment="$APPCONFIG_ENV" >> target/classes/release.properties
+fi
+
+if [[ -z "$APPCONFIG_CNF" ]]; then
+  echo "Environment variable APPCONFIG_CNF is not defined."; exit $FAILURE
+else
+  echo APPCONFIG_CNF="$APPCONFIG_CNF"
+  echo appconfig.profile="$APPCONFIG_CNF" >> target/classes/release.properties
+fi
+
+exit $SUCCESS

@@ -1,0 +1,24 @@
+version: 0.2
+# This file is used at the build stage
+phases:
+  build:
+    commands:
+      - mvn clean compile
+      - mvn test -Dtest=UnitTest*
+artifacts:
+  files:
+    - 'appspec.yml'
+    - 'buildspec-release.yml'
+    - 'pom.xml'
+    - 'scripts/*'
+    - 'target/classes/**/*'
+    - 'target/test-classes/**/*'
+cache:
+  paths:
+    - '/root/.m2/**/*' 
+reports:
+  UnitTests: # CodeBuild will create a report group called "UnitTests".
+    files: # Store all of the files
+      - '**/*' 
+    base-directory: 'target/surefire-reports' # Location of the reports   
+    file-format: "JINITXML" # Type of the report as per https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#reports-buildspec-file

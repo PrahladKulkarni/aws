@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: [[${config.itemColor}]];
+            color: black;
+        }
+
+        table td {
+            padding: 7px;
+            font-size: 120%;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .metadata {
+            border-style: solid;
+            border-width: medium;
+            border-color: red;
+            padding: 10px;
+        }
+
+        .priceIncrease {
+            color: red;
+            text-decoration: line-through;
+        }
+
+        .priceDrop {
+            color: blue;
+            text-decoration: line-through;
+        }
+    </style>
+    <title>Sample Application - Product Catalog</title>
+</head>
+
+<body>
+    <div th:replace="fragments.html :: logout" />    
+    <div th:replace="fragments.html :: metadata" />    
+    <h1>Product Catalog</h1>
+    <table>
+        <th>ID</th>
+        <th>Year</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Inventory</th>
+        <th>Price</th>
+        <th>Price Trend</th>
+        <tr th:each="item: ${catalog}">
+            <td><a th:href="@{product(id=${item.id})}" th:text="${item.id}" target="_blank" /></td>
+            <td th:text="${item.year}" />
+            <td th:text="${item.title}" />
+            <td th:text="${item.productCategory}" />
+            <td>
+                <div th:text="${item.qty}" style="text-align: right;" />
+            </td>
+            <td th:text="'$'+${item.price}" />
+            <td>
+                <div th:if="${item.oldPrice} > 0">
+                    <div class="priceIncrease" th:if="${item.price} > ${item.oldPrice}"
+                        th:text="'$'+${item.oldPrice}" />
+                    <div class="priceDrop" th:if="${item.price} < ${item.oldPrice}" th:text="'$'+${item.oldPrice}" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

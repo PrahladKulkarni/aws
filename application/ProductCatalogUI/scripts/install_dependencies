@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "--> Installing Java runtime"
+amazon-linux-extras install java-openjdk11

@@ -1,0 +1,24 @@
+version: 0.2
+# This file is used at the release stage
+phases:
+  pre_build:
+    commands:
+      - sh scripts/configure_release
+  build:
+    commands:
+      - mvn test -Dtest=IntegrationTest*
+      - mvn package -Dmaven.test.skip=true
+artifacts:
+  files:
+    - 'appspec.yml'
+    - 'scripts/*'
+    - 'target/prodcatalog-2.0.0.jar'
+cache:
+  paths:
+    - '/root/.m2/**/*'
+reports:
+  IntegrationTests: # CodeBuild will create a report group called "IntegrationTests".
+    files: # Store all of the files
+      - '**/*' 
+    base-directory: 'target/surefire-reports' # Location of the reports   
+    file-format: "JINITXML" # Type of the report as per https://docs.aws.amazon.com/codebuild/latest/userguide/build-spec-ref.html#reports-buildspec-file    
