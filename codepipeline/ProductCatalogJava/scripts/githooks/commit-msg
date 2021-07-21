@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-#See https://git-secret.io/ for details about git secrets 
-git secrets --commit_msg_hook -- "$@"
