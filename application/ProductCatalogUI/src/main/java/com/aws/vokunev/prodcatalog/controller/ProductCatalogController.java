@@ -43,6 +43,7 @@ public class ProductCatalogController {
         // Retrieve the list of catalog items
         List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList());
         LOGGER.info("Retrieved {} items", catalog.size());
+        
         // Make the list available to the view
         model.addAttribute("catalog", catalog);
 
@@ -60,6 +61,7 @@ public class ProductCatalogController {
         // Retrieve a product for the provided id
         Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), productId);
         LOGGER.info("Retrieved product: {}", product);
+        
         // Make the list available to the view
         model.addAttribute("product", product);
 
@@ -80,7 +82,10 @@ public class ProductCatalogController {
         // Make the application configuration available to the view
         model.addAttribute("config", config);
 
+        // Initialize application permissions based on the combination of the access
+        // token and the application configuration data
         ApplicationPermissions permissions = new ApplicationPermissions(token, config);
+
         // Make the application permissions available to the view
         model.addAttribute("permissions", permissions);
 

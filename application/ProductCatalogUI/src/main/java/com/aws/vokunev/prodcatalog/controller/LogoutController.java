@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * This controller handles the logout sequence for the Cognito User
- * Pool-authenticated user.
+ * Pool-authenticated user in accordance with:
+ * https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html#authentication-logout
  */
 @Controller
 public class LogoutController {

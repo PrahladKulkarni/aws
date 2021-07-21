@@ -13,6 +13,10 @@
             color: black;
         }
 
+        table {
+            padding-top: 15px;
+        }
+
         table td {
             padding: 7px;
             font-size: 120%;
@@ -38,6 +42,11 @@
             color: blue;
             text-decoration: line-through;
         }
+
+        h1, div#version {
+            display: inline;
+        }
+
     </style>
     <title>Sample Application - Product Catalog</title>
 </head>
@@ -46,6 +55,7 @@
     <div th:replace="fragments.html :: logout" />    
     <div th:replace="fragments.html :: metadata" />    
     <h1>Product Catalog</h1>
+    <div id="version">(v2.0.0-demo.1)</div>
     <table>
         <th>ID</th>
         <th>Year</th>
