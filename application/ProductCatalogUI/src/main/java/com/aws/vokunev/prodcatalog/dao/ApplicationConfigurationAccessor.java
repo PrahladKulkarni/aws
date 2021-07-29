@@ -63,6 +63,11 @@ public class ApplicationConfigurationAccessor {
         return result;
     }
 
+    /**
+     * Retrieves an application configuration from AWS AppConfig service based on the values specified in release.properties file.
+     * 
+     * @return Instance of ApplicationConfiguration object
+     */
     public ApplicationConfiguration getConfiguration() {
 
         LOGGER.info("Requesting AppConfig configuration for application={}, environment={}, configuration profile={}",
@@ -77,8 +82,21 @@ public class ApplicationConfigurationAccessor {
         String appConfigResponse = result.content().asUtf8String();
         LOGGER.info("AppConfig response: {}", appConfigResponse);
 
-        // Process the results
-        DocumentContext context = JsonPath.parse(appConfigResponse);
+        // Process the response
+        return getConfiguration(appConfigResponse);
+    }
+
+    /**
+     * Parses JSON document representing application configuration and creates an
+     * instance of ApplicationConfiguration object.
+     * 
+     * @param applicationConfigurationJson JSON document representing application
+     *                                     configuration
+     * @return Instance of ApplicationConfiguration object
+     */
+    public ApplicationConfiguration getConfiguration(String applicationConfigurationJson) {
+
+        DocumentContext context = JsonPath.parse(applicationConfigurationJson);
         ApplicationConfiguration config = new ApplicationConfiguration();
         config.setServiceEndpointProductList(context.read("$.ServiceEndpointProductList"));
         config.setServiceEndpointProductDetails(context.read("$.ServiceEndpointProductDetails"));
@@ -95,4 +113,5 @@ public class ApplicationConfigurationAccessor {
 
         return config;
     }
+
 }
