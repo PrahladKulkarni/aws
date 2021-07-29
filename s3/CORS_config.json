@@ -1,11 +1,13 @@
 [
     {
-        "AllowedHeaders": [],
+        "AllowedHeaders": [
+            "*"
+        ],
         "AllowedMethods": [
             "GET"
         ],
         "AllowedOrigins": [
-            "*"
+            "https://*.cloud101.link"
         ],
         "ExposeHeaders": []
     }
