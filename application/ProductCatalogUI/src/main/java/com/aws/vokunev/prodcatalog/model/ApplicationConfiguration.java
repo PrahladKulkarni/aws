@@ -2,16 +2,36 @@ package com.aws.vokunev.prodcatalog.model;
 
 import java.util.List;
 
+/**
+ * An object of this type represents application configuration data
+ */
 public class ApplicationConfiguration {
 
+    private List<String> instanceMetadataAccessRoles;
+    private String apiKeySecret;
     private String serviceEndpointProductList;
     private String serviceEndpointProductDetails;
     private String serviceEndpointLogout;
     private String itemColor;
-    private boolean featureFlagShoppingCart;
-    private List<String> instanceMetadataAccessRoles;
+    private boolean featureFlagPriceUpdate;
 
     public ApplicationConfiguration() {
+    }
+
+    public List<String> getInstanceMetadataAccessRoles() {
+        return instanceMetadataAccessRoles;
+    }
+
+    public void setInstanceMetadataAccessRoles(List<String> instanceMetadataAccessRoles) {
+        this.instanceMetadataAccessRoles = instanceMetadataAccessRoles;
+    }
+
+    public String getApiKeySecret() {
+        return apiKeySecret;
+    }
+
+    public void setApiKeySecret(String apiKeySecret) {
+        this.apiKeySecret = apiKeySecret;
     }
 
     public String getServiceEndpointProductList() {
@@ -46,28 +66,20 @@ public class ApplicationConfiguration {
         this.itemColor = itemColor;
     }
 
-    public boolean isFeatureFlagShoppingCart() {
-        return featureFlagShoppingCart;
+    public boolean isFeatureFlagPriceUpdate() {
+        return featureFlagPriceUpdate;
     }
 
-    public void setFeatureFlagShoppingCart(boolean featureFlagShoppingCart) {
-        this.featureFlagShoppingCart = featureFlagShoppingCart;
-    }
-
-    public List<String> getInstanceMetadataAccessRoles() {
-        return instanceMetadataAccessRoles;
-    }
-
-    public void setInstanceMetadataAccessRoles(List<String> instanceMetadataAccessRoles) {
-        this.instanceMetadataAccessRoles = instanceMetadataAccessRoles;
+    public void setFeatureFlagPriceUpdate(boolean featureFlagPriceUpdate) {
+        this.featureFlagPriceUpdate = featureFlagPriceUpdate;
     }
 
     @Override
     public String toString() {
-        return "ApplicationConfiguration [featureFlagShoppingCart=" + featureFlagShoppingCart
-                + ", instanceMetadataAccessRoles=" + instanceMetadataAccessRoles + ", itemColor=" + itemColor
-                + ", serviceEndpointLogout=" + serviceEndpointLogout + ", serviceEndpointProductDetails="
-                + serviceEndpointProductDetails + ", serviceEndpointProductList=" + serviceEndpointProductList + "]";
+        return "ApplicationConfiguration [apiKeySecret=" + apiKeySecret + ", featureFlagPriceUpdate="
+                + featureFlagPriceUpdate + ", instanceMetadataAccessRoles=" + instanceMetadataAccessRoles
+                + ", itemColor=" + itemColor + ", serviceEndpointLogout=" + serviceEndpointLogout
+                + ", serviceEndpointProductDetails=" + serviceEndpointProductDetails + ", serviceEndpointProductList="
+                + serviceEndpointProductList + "]";
     }
-
 }

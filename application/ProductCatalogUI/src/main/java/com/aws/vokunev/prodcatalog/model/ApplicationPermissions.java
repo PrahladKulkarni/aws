@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * This class encapsulates the application permissions rules.
+ * An object of this type represents the application permissions rules.
  */
 public class ApplicationPermissions {
 

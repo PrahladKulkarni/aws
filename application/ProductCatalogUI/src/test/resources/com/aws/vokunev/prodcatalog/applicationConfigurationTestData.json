@@ -1,0 +1,11 @@
+{
+    "InstanceMetadataAccessRoles": [
+      "operations"
+    ],
+    "APIKeySecret": "mysecret",
+    "ServiceEndpointProductList": "productlistapiendpoint",
+    "ServiceEndpointProductDetails": "productdetailsapiendpoint",
+    "ServiceEndpointLogout": "logoutendpoint",
+    "ItemColor": "lightskyblue",
+    "FeatureFlagPriceUpdate": true
+  }

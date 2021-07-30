@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 /*
- * This object represents a Product. Each product has a set of core properties accessible via
+ * An object of this type represents a Product. Each product has a set of core properties accessible via
  * setters and getters. The product may also have other arbitrary properties accessible via
  * addProperty/getProperties method. 
  */ 

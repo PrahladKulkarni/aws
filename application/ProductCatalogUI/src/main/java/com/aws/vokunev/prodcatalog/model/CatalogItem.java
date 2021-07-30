@@ -1,7 +1,7 @@
 package com.aws.vokunev.prodcatalog.model;
 
 /**
- * This class represents a catalog item with the common set of properties.
+ * An object of this type represents a catalog item with the common set of properties.
  */
 public class CatalogItem implements Comparable<CatalogItem>{
 

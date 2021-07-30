@@ -98,17 +98,18 @@ public class ApplicationConfigurationAccessor {
 
         DocumentContext context = JsonPath.parse(applicationConfigurationJson);
         ApplicationConfiguration config = new ApplicationConfiguration();
-        config.setServiceEndpointProductList(context.read("$.ServiceEndpointProductList"));
-        config.setServiceEndpointProductDetails(context.read("$.ServiceEndpointProductDetails"));
-        config.setServiceEndpointLogout(context.read("$.ServiceEndpointLogout"));
         int totalInstanceMetadataAccessRoles = context.read("$.InstanceMetadataAccessRoles.length()");
         List<String> roles = new ArrayList<String>(totalInstanceMetadataAccessRoles);
         for (int i = 0; i < totalInstanceMetadataAccessRoles; i++) {
             roles.add(context.read(String.format("$.InstanceMetadataAccessRoles[%s]", i)));
         }
+        config.setApiKeySecret(context.read("$.APIKeySecret"));
+        config.setServiceEndpointProductList(context.read("$.ServiceEndpointProductList"));
+        config.setServiceEndpointProductDetails(context.read("$.ServiceEndpointProductDetails"));
+        config.setServiceEndpointLogout(context.read("$.ServiceEndpointLogout"));
         config.setInstanceMetadataAccessRoles(roles);
         config.setItemColor(context.read("$.ItemColor"));
-        config.setFeatureFlagShoppingCart(context.read("$.FeatureFlagShoppingCart"));
+        config.setFeatureFlagPriceUpdate(context.read("$.FeatureFlagPriceUpdate"));
         LOGGER.info("AppConfig response parsed: {}", config);
 
         return config;
