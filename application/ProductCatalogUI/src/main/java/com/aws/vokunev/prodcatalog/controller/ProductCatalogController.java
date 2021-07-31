@@ -41,7 +41,7 @@ public class ProductCatalogController {
         ApplicationConfiguration config = preprocess(token, model);
 
         // Retrieve the list of catalog items
-        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList());
+        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), null);
         LOGGER.info("Retrieved {} items", catalog.size());
         
         // Make the list available to the view
@@ -59,7 +59,7 @@ public class ProductCatalogController {
         ApplicationConfiguration config = preprocess(token, model);
 
         // Retrieve a product for the provided id
-        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), productId);
+        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), null, productId);
         LOGGER.info("Retrieved product: {}", product);
         
         // Make the list available to the view

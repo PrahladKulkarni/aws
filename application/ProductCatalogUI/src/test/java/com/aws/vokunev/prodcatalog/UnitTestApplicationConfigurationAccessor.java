@@ -24,18 +24,20 @@ public class UnitTestApplicationConfigurationAccessor {
     void testParseApplicationConfiguration() throws Exception {
 
         // Load test JSON data from a file
-        String json = IOUtils.toString(
-            this.getClass().getResourceAsStream("applicationConfigurationTestData.json"),
-            "UTF-8"
-        );
+        String json = IOUtils.toString(this.getClass().getResourceAsStream("applicationConfigurationTestData.json"),
+                "UTF-8");
 
+        // Parse JSON to ApplicationConfiguration object
         ApplicationConfiguration config = configurationAccessor.getConfiguration(json);
         assertNotNull(config);
         assertTrue(config.getInstanceMetadataAccessRoles().contains("operations"));
-        assertEquals(config.getApiKeySecret(), "mysecret");
-        assertEquals(config.getServiceEndpointProductList(), "productlistapiendpoint");
-        assertEquals(config.getServiceEndpointProductDetails(), "productdetailsapiendpoint");
-        assertEquals(config.getServiceEndpointLogout(), "logoutendpoint");
+        assertEquals(config.getApiKeySecret(), "apigateway/apikeys/cloud101.link/production");
+        assertEquals(config.getServiceEndpointProductList(),
+                "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/list");
+        assertEquals(config.getServiceEndpointProductDetails(),
+                "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/details");
+        assertEquals(config.getServiceEndpointLogout(),
+                "https://auth.cloud101.link/logout?client_id=34fak97jrt25f4bqdvad28rsdd&logout_uri=https://www.cloud101.link/prodcatalog/");
         assertEquals(config.getItemColor(), "lightskyblue");
         assertEquals(config.isFeatureFlagPriceUpdate(), true);
     }

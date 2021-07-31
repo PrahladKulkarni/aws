@@ -22,7 +22,7 @@ public class Product extends CatalogItem {
 
     public void addProperty(String key, String value) {
         // perform case-insensitive match against the core properties
-        if (key.matches("(?i:year|description|productCategory|title|image|bucket|price|id)")) {
+        if (key.matches("(?i:year|description|productCategory|title|image|bucket|qty|price|id)")) {
             // skip the property
             return;
         }

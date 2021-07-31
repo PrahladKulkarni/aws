@@ -20,12 +20,12 @@ import org.springframework.stereotype.Component;
 public class ProductDataAccessor extends APIDataAccessor {
 
     /**
-     * This method populates a list of {@link CatalogItem} objects from
-     * ProductCatalog table.
+     * This method fetches a list of {@link CatalogItem} objects from from the
+     * provided service endpoint.
      * 
      * @return a list of {@link CatalogItem} objects
      */
-    public List<CatalogItem> getProductCatalog(String serviceEndpointURL) {
+    public List<CatalogItem> getProductCatalog(String serviceEndpointURL, String apiKey) {
 
         // Invoke the API
         String result = invokeGetAPIRequest(serviceEndpointURL);
@@ -35,8 +35,21 @@ public class ProductDataAccessor extends APIDataAccessor {
             return null;
         }
 
-        // Process the results
-        DocumentContext context = JsonPath.parse(result);
+        return getProductCatalog(result);
+    }
+
+    /**
+     * Parses JSON document representing a list of product catalog items and creates
+     * list of {@link CatalogItem} objects.
+     * 
+     * @param productListData JSON document representing a list of product catalog
+     *                        items.
+     * @return a list of {@link CatalogItem} objects
+     */
+    public List<CatalogItem> getProductCatalog(String productListData) {
+
+        // Parse the JSON document
+        DocumentContext context = JsonPath.parse(productListData);
         int totalProducts = context.read("$.Products.length()");
 
         // Populate Product Catalog list from the database records
@@ -47,6 +60,7 @@ public class ProductDataAccessor extends APIDataAccessor {
             item.setQty(context.read(String.format("$.Products[%s].Qty", i)));
             item.setYear(context.read(String.format("$.Products[%s].Year", i), Integer.class));
             item.setTitle(context.read(String.format("$.Products[%s].Title", i)));
+            item.setDescription(context.read(String.format("$.Products[%s].Description", i)));
             item.setProductCategory(context.read(String.format("$.Products[%s].ProductCategory", i)));
             item.setPrice(context.read(String.format("$.Products[%s].Price", i), Double.class));
             try {
@@ -64,17 +78,19 @@ public class ProductDataAccessor extends APIDataAccessor {
     }
 
     /**
-     * This method fetches a Product for the provided ID.
+     * This method fetches a {@link Product} for the provided ID from the provided
+     * service endpoint.
      * 
      * @param productId product ID
      * @return an instance of a {@link Product} for the provided ID or null if not
      *         found.
      */
-    public Product getProduct(String serviceEndpointURL, int productId) {
+    public Product getProduct(String serviceEndpointURL, String apiKey, int productId) {
 
         // Prepare the request
         String requestUrlTemplate = serviceEndpointURL.concat("?id=%s");
         String requestUrl = String.format(requestUrlTemplate, productId);
+
         // Invoke the API
         String result = invokeGetAPIRequest(requestUrl);
 
@@ -83,8 +99,21 @@ public class ProductDataAccessor extends APIDataAccessor {
             return null;
         }
 
-        // Process the results
-        DocumentContext context = JsonPath.parse(result);
+        return getProduct(result);
+    }
+
+    /**
+     * Parses JSON document representing a single product from the product catalog
+     * and creates an instance of a {@link Product} object.
+     * 
+     * @param productData JSON document representing a single product from the
+     *                    product catalog
+     * @return Instance of {@link Product} object
+     */
+    public Product getProduct(String productData) {
+
+        // Parse the JSON document
+        DocumentContext context = JsonPath.parse(productData);
 
         // Capture the core properties
         Product product = new Product();
@@ -95,13 +124,16 @@ public class ProductDataAccessor extends APIDataAccessor {
         product.setTitle(context.read("$.Title"));
         product.setImage(context.read("$.Image"));
         product.setPrice(context.read("$.Price", Double.class));
+        product.setQty(context.read("$.Qty", Integer.class));
         product.setId(context.read("$.Id", Integer.class));
+
         // Capture the additional properties
-        LinkedHashMap<String, Object> props = JsonPath.parse(result).read("$");
+        LinkedHashMap<String, Object> props = JsonPath.parse(productData).read("$");
         for (Map.Entry<String, Object> entry : props.entrySet()) {
             product.addProperty(entry.getKey(), String.valueOf(entry.getValue()));
         }
 
         return product;
+
     }
 }

@@ -50,7 +50,7 @@ public class IntegrationTestProductDataAccessor {
     @Test
     @DisplayName("Test for retrieving product list")
     void testRetrieveProductList() {
-        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList());
+        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), null);
         assertNotNull(catalog);
         assertTrue(catalog.size() > 0);
     }
@@ -60,7 +60,7 @@ public class IntegrationTestProductDataAccessor {
     void testRetrieveExistingProduct() {
         // Product id -1 is a special test case, the data accessor retrieves the first
         // available product
-        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), -1);
+        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), null, -1);
         assertNotNull(product);
     }
 
@@ -68,7 +68,7 @@ public class IntegrationTestProductDataAccessor {
     @DisplayName("Test for retrieving non existing product")
     void testRetrieveNonExistingProduct() {
         try {
-            Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), -100);
+            Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), null, -100);
             assertNull(product);
         } catch (Exception ex) {
         }

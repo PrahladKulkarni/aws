@@ -50,7 +50,7 @@ public abstract class APIDataAccessor {
 
             // Process the response
             String result = EntityUtils.toString(response.getEntity());
-            LOGGER.info("HTTP response data: {}", response.getStatusLine().toString());
+            LOGGER.info("HTTP response data: {}", result);
 
             if (result == null) {
                 throw new RuntimeException("Unexpected null value for API response entity.");
