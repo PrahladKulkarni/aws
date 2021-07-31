@@ -42,6 +42,7 @@ public abstract class APIDataAccessor {
 
         try {
             // Send Get request 
+            LOGGER.info("Sending HTTP GET request: {}", request);
             CloseableHttpResponse response = httpClient.execute(request);
 
             // Log the HttpResponse Status
@@ -49,6 +50,8 @@ public abstract class APIDataAccessor {
 
             // Process the response
             String result = EntityUtils.toString(response.getEntity());
+            LOGGER.info("HTTP response data: {}", response.getStatusLine().toString());
+
             if (result == null) {
                 throw new RuntimeException("Unexpected null value for API response entity.");
             } 
