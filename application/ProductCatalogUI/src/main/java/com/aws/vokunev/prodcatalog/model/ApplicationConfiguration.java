@@ -9,6 +9,7 @@ public class ApplicationConfiguration {
 
     private List<String> instanceMetadataAccessRoles;
     private String apiKeySecret;
+    private String apiKey;
     private String serviceEndpointProductList;
     private String serviceEndpointProductDetails;
     private String serviceEndpointLogout;
@@ -34,7 +35,15 @@ public class ApplicationConfiguration {
         this.apiKeySecret = apiKeySecret;
     }
 
-    public String getServiceEndpointProductList() {
+    public String getApiKey() {
+		return apiKey;
+	}
+
+	public void setApiKey(String apiKey) {
+		this.apiKey = apiKey;
+	}
+
+	public String getServiceEndpointProductList() {
         return serviceEndpointProductList;
     }
 

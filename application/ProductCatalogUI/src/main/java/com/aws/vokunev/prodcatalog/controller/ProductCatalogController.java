@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.aws.vokunev.prodcatalog.dao.ApplicationConfigurationAccessor;
 import com.aws.vokunev.prodcatalog.dao.ProductDataAccessor;
+import com.aws.vokunev.prodcatalog.dao.SecretsAccessor;
 import com.aws.vokunev.prodcatalog.model.AccessToken;
 import com.aws.vokunev.prodcatalog.model.ApplicationConfiguration;
 import com.aws.vokunev.prodcatalog.model.ApplicationPermissions;
@@ -34,14 +35,17 @@ public class ProductCatalogController {
     @Autowired
     private ApplicationConfigurationAccessor configurationAccessor;
 
+    @Autowired
+    private SecretsAccessor secretsAccessor;    
+
     @GetMapping("/")
-    public String productList(@RequestAttribute(name = "token", required = false) AccessToken token, Model model) {
+    public String productList(@RequestAttribute(name = "token", required = false) AccessToken token, Model model) throws Exception{
 
         // Preprocess the request
         ApplicationConfiguration config = preprocess(token, model);
 
         // Retrieve the list of catalog items
-        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), null);
+        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), config.getApiKey());
         LOGGER.info("Retrieved {} items", catalog.size());
         
         // Make the list available to the view
@@ -53,13 +57,13 @@ public class ProductCatalogController {
 
     @GetMapping("/product")
     public String productDetails(@RequestAttribute(name = "token", required = false) AccessToken token,
-            @RequestParam(name = "id", required = true) int productId, Model model) {
+            @RequestParam(name = "id", required = true) int productId, Model model) throws Exception {
 
         // Preprocess the request
         ApplicationConfiguration config = preprocess(token, model);
 
         // Retrieve a product for the provided id
-        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), null, productId);
+        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), productId);
         LOGGER.info("Retrieved product: {}", product);
         
         // Make the list available to the view
@@ -79,6 +83,12 @@ public class ProductCatalogController {
         if (config == null) {
             throw new RuntimeException("The application configuration is not available.");
         }
+
+        if (config.getApiKeySecret() != null) {
+            // The APi invocation requires an API key, which has to be retrieved first
+            config.setApiKey(secretsAccessor.getSecret(config.getApiKeySecret(), "apikey"));
+        }
+
         // Make the application configuration available to the view
         model.addAttribute("config", config);
 

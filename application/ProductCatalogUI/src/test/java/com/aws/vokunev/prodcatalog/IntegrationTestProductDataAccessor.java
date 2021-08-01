@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.aws.vokunev.prodcatalog.dao.ApplicationConfigurationAccessor;
 import com.aws.vokunev.prodcatalog.dao.ProductDataAccessor;
+import com.aws.vokunev.prodcatalog.dao.SecretsAccessor;
 import com.aws.vokunev.prodcatalog.model.ApplicationConfiguration;
 import com.aws.vokunev.prodcatalog.model.CatalogItem;
 import com.aws.vokunev.prodcatalog.model.Product;
@@ -33,6 +35,9 @@ public class IntegrationTestProductDataAccessor {
     private ApplicationConfigurationAccessor configurationAccessor;
 
     @Autowired
+    private SecretsAccessor secretsAccessor;
+
+    @Autowired
     private ProductDataAccessor productDataAccessor;
 
     private static ApplicationConfiguration config;
@@ -40,6 +45,14 @@ public class IntegrationTestProductDataAccessor {
     @BeforeAll
     void setup() {
         config = configurationAccessor.getConfiguration();
+        if (config == null) {
+            throw new RuntimeException("The application configuration is not available.");
+        }
+
+        if (config.getApiKeySecret() != null) {
+            // The APi invocation requires an API key, which has to be retrieved first
+            config.setApiKey(secretsAccessor.getSecret(config.getApiKeySecret(), "apikey"));
+        }
     }
 
     @AfterAll
@@ -49,18 +62,18 @@ public class IntegrationTestProductDataAccessor {
 
     @Test
     @DisplayName("Test for retrieving product list")
-    void testRetrieveProductList() {
-        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), null);
+    void testRetrieveProductList() throws IOException {
+        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), config.getApiKey());
         assertNotNull(catalog);
         assertTrue(catalog.size() > 0);
     }
 
     @Test
     @DisplayName("Test for retrieving existing product")
-    void testRetrieveExistingProduct() {
+    void testRetrieveExistingProduct() throws IOException {
         // Product id -1 is a special test case, the data accessor retrieves the first
         // available product
-        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), null, -1);
+        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), -1);
         assertNotNull(product);
     }
 
@@ -68,7 +81,7 @@ public class IntegrationTestProductDataAccessor {
     @DisplayName("Test for retrieving non existing product")
     void testRetrieveNonExistingProduct() {
         try {
-            Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), null, -100);
+            Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), -100);
             assertNull(product);
         } catch (Exception ex) {
         }

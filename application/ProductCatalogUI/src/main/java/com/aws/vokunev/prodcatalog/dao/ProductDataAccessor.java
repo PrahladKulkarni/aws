@@ -1,5 +1,6 @@
 package com.aws.vokunev.prodcatalog.dao;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -25,10 +26,10 @@ public class ProductDataAccessor extends APIDataAccessor {
      * 
      * @return a list of {@link CatalogItem} objects
      */
-    public List<CatalogItem> getProductCatalog(String serviceEndpointURL, String apiKey) {
+    public List<CatalogItem> getProductCatalog(String serviceEndpointURL, String apiKey) throws IOException {
 
         // Invoke the API
-        String result = invokeGetAPIRequest(serviceEndpointURL);
+        String result = invokeGetAPIRequest(serviceEndpointURL, apiKey);
 
         if (result == null) {
             // The product list is not available
@@ -85,14 +86,14 @@ public class ProductDataAccessor extends APIDataAccessor {
      * @return an instance of a {@link Product} for the provided ID or null if not
      *         found.
      */
-    public Product getProduct(String serviceEndpointURL, String apiKey, int productId) {
+    public Product getProduct(String serviceEndpointURL, String apiKey, int productId) throws IOException {
 
         // Prepare the request
         String requestUrlTemplate = serviceEndpointURL.concat("?id=%s");
         String requestUrl = String.format(requestUrlTemplate, productId);
 
         // Invoke the API
-        String result = invokeGetAPIRequest(requestUrl);
+        String result = invokeGetAPIRequest(requestUrl, apiKey);
 
         if (result == null) {
             // The product is not available

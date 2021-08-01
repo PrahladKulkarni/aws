@@ -1,5 +1,7 @@
 package com.aws.vokunev.prodcatalog.dao;
 
+import java.io.IOException;
+
 import com.aws.vokunev.prodcatalog.model.InstanceMetadata;
 
 import org.springframework.stereotype.Component;
@@ -15,7 +17,7 @@ public class InstanceMetadataAccessor extends APIDataAccessor {
      * has been deployed to an EC2 instance.
      * @return an instance of a {@link InstanceMetadata} or null if not available.
      */
-    public InstanceMetadata getInstanceMetadata() {
+    public InstanceMetadata getInstanceMetadata() throws IOException {
 
         InstanceMetadata result = null;
 

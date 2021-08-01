@@ -3,6 +3,8 @@ package com.aws.vokunev.prodcatalog.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+
 import com.jayway.jsonpath.JsonPath;
 
 import org.apache.http.client.config.RequestConfig;
@@ -13,62 +15,76 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 /**
- * This is a base class for the data accessors retrieving the data from a web API.
+ * This is a base class for the data accessors retrieving the data from a web
+ * API.
  */
 public abstract class APIDataAccessor {
 
-    private static final Logger LOGGER=LoggerFactory.getLogger(APIDataAccessor.class);    
+    private static final Logger LOGGER = LoggerFactory.getLogger(APIDataAccessor.class);
 
     /**
-     * Invokes a web API
-     * @param url - the url of the API
+     * Invokes a web API.
+     * 
+     * @param url    - the url of the API
      * @return the result of an API invocation or null if not available
      */
-    protected String invokeGetAPIRequest(String url) {
+    protected String invokeGetAPIRequest(String url) throws IOException {
+        return invokeGetAPIRequest(url, null);
+    }
+
+    /**
+     * Invokes a web API with provided API key.
+     * 
+     * @param url    - the url of the API
+     * @param apiKey - the value of the API key
+     * @return the result of an API invocation or null if not available
+     */
+    protected String invokeGetAPIRequest(String url, String apiKey) throws IOException {
 
         int timeoutSeconds = 5;
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
+        
+        // Include an API key if provided
+        if (apiKey != null) {
+            request.setHeader("x-api-key", apiKey);
+        }
 
         int CONNECTION_TIMEOUT_MS = timeoutSeconds * 1000; // Timeout in millis.
-        RequestConfig requestConfig = RequestConfig.custom()
-            .setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS)
-            .setConnectTimeout(CONNECTION_TIMEOUT_MS)
-            .setSocketTimeout(CONNECTION_TIMEOUT_MS)
-            .build();
+        RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(CONNECTION_TIMEOUT_MS)
+                .setConnectTimeout(CONNECTION_TIMEOUT_MS).setSocketTimeout(CONNECTION_TIMEOUT_MS).build();
 
         request.setConfig(requestConfig);
 
-        try {
-            // Send Get request 
-            LOGGER.info("Sending HTTP GET request: {}", request);
-            CloseableHttpResponse response = httpClient.execute(request);
+        // Send Get request
+        LOGGER.info("Sending HTTP GET request: {}", request);
+        CloseableHttpResponse response = httpClient.execute(request);
 
-            // Log the HttpResponse Status
-            LOGGER.info("HTTP response status: {}", response.getStatusLine().toString());
+        // Log the HttpResponse Status
+        LOGGER.info("HTTP response status: {}", response.getStatusLine().toString());
 
-            // Process the response
-            String result = EntityUtils.toString(response.getEntity());
-            LOGGER.info("HTTP response data: {}", result);
+        // Process the response
+        String result = EntityUtils.toString(response.getEntity());
+        LOGGER.info("HTTP response data: {}", result);
 
-            if (result == null) {
-                throw new RuntimeException("Unexpected null value for API response entity.");
-            } 
-
-            try {
-                String error = JsonPath.read(result, "$.errorMessage");
-                throw new RuntimeException(error);
-            } catch (com.jayway.jsonpath.PathNotFoundException ex) {
-                // No error was returned, which is good, we can continue
-            }
-    
-            // Parse the content
-            return result;
-
-        } catch (Exception ex) {
-            LOGGER.error("API invocation error: {}", ex.getMessage());
-            return null;
+        // Treat any response code other than 200 as an error
+        if (response.getStatusLine().getStatusCode() != 200) {
+            throw new RuntimeException(response.getStatusLine().toString());
         }
+
+        if (result == null) {
+            throw new RuntimeException("Unexpected null value for API response entity.");
+        }
+
+        try {
+            String error = JsonPath.read(result, "$.errorMessage");
+            throw new RuntimeException(error);
+        } catch (com.jayway.jsonpath.PathNotFoundException ex) {
+            // No error was returned, which is good, we can continue
+        }
+
+        // Parse the content
+        return result;
     }
 }
