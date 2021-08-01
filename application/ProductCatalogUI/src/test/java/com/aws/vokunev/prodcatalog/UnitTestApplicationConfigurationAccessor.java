@@ -31,6 +31,7 @@ public class UnitTestApplicationConfigurationAccessor {
         ApplicationConfiguration config = configurationAccessor.getConfiguration(json);
         assertNotNull(config);
         assertTrue(config.getInstanceMetadataAccessRoles().contains("operations"));
+        assertTrue(config.getPriceUpdateRoles().contains("managers"));        
         assertEquals(config.getApiKeySecret(), "apigateway/apikeys/cloud101.link/production");
         assertEquals(config.getServiceEndpointProductList(),
                 "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/list");

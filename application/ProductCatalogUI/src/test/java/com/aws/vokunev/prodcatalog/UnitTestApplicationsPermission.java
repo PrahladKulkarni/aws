@@ -37,11 +37,16 @@ public class UnitTestApplicationsPermission {
         token2 = new AccessToken();
         token2.setGroups(tokenUserGroups2);
 
-        ArrayList<String> configUserGroups1 = new ArrayList<String>();
-        configUserGroups1.add("engineers");
-        configUserGroups1.add("operations");
         config = new ApplicationConfiguration();
-        config.setInstanceMetadataAccessRoles(configUserGroups1);
+
+        ArrayList<String> instanceMetadataAccessRoles = new ArrayList<String>();
+        instanceMetadataAccessRoles.add("engineers");
+        instanceMetadataAccessRoles.add("operations");
+        config.setInstanceMetadataAccessRoles(instanceMetadataAccessRoles);
+
+        ArrayList<String> priceUpdateRoles = new ArrayList<String>();
+        priceUpdateRoles.add("managers");
+        config.setPriceUpdateRoles(priceUpdateRoles);
     }
 
     @AfterAll
@@ -52,17 +57,32 @@ public class UnitTestApplicationsPermission {
     }
 
     @Test
-    @DisplayName("Test for permission granted")
-    void testPermissionGranted() {
+    @DisplayName("Test for metadata access permission granted")
+    void testMetadataAccessPermissionGranted() {
         ApplicationPermissions permission = new ApplicationPermissions(token1, config);
         assertTrue(permission.isPermittedToAccessMetadata());
     }
 
     @Test
-    @DisplayName("Test for permission denied")
-    void testPermissionDenied() {
+    @DisplayName("Test for metadata access permission denied")
+    void testMetadataAccessPermissionDenied() {
         ApplicationPermissions permission = new ApplicationPermissions(token2, config);
         assertFalse(permission.isPermittedToAccessMetadata());
     }
+
+    @Test
+    @DisplayName("Test for price update permission granted")
+    void testPriceUpdatePermissionGranted() {
+        ApplicationPermissions permission = new ApplicationPermissions(token1, config);
+        assertTrue(permission.isPermittedToUpdatePrice());
+    }
+
+    @Test
+    @DisplayName("Test for price update permission denied")
+    void testPriceUpdatePermissionDenied() {
+        ApplicationPermissions permission = new ApplicationPermissions(token2, config);
+        assertFalse(permission.isPermittedToUpdatePrice());
+    }
+
 
 }

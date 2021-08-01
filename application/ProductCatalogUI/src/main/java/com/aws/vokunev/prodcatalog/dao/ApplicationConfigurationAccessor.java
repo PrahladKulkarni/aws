@@ -98,16 +98,25 @@ public class ApplicationConfigurationAccessor {
 
         DocumentContext context = JsonPath.parse(applicationConfigurationJson);
         ApplicationConfiguration config = new ApplicationConfiguration();
+        
         int totalInstanceMetadataAccessRoles = context.read("$.InstanceMetadataAccessRoles.length()");
-        List<String> roles = new ArrayList<String>(totalInstanceMetadataAccessRoles);
+        List<String> instanceMetadataAccessRoles = new ArrayList<String>(totalInstanceMetadataAccessRoles);
         for (int i = 0; i < totalInstanceMetadataAccessRoles; i++) {
-            roles.add(context.read(String.format("$.InstanceMetadataAccessRoles[%s]", i)));
+            instanceMetadataAccessRoles.add(context.read(String.format("$.InstanceMetadataAccessRoles[%s]", i)));
         }
+        config.setInstanceMetadataAccessRoles(instanceMetadataAccessRoles);
+
+        int totalPriceUpdateRoles = context.read("$.PriceUpdateRoles.length()");
+        List<String> priceUpdateRoles = new ArrayList<String>(totalPriceUpdateRoles);
+        for (int i = 0; i < totalPriceUpdateRoles; i++) {
+            priceUpdateRoles.add(context.read(String.format("$.PriceUpdateRoles[%s]", i)));
+        }
+        config.setPriceUpdateRoles(priceUpdateRoles);
+
         config.setApiKeySecret(context.read("$.APIKeySecret"));
         config.setServiceEndpointProductList(context.read("$.ServiceEndpointProductList"));
         config.setServiceEndpointProductDetails(context.read("$.ServiceEndpointProductDetails"));
         config.setServiceEndpointLogout(context.read("$.ServiceEndpointLogout"));
-        config.setInstanceMetadataAccessRoles(roles);
         config.setItemColor(context.read("$.ItemColor"));
         config.setFeatureFlagPriceUpdate(context.read("$.FeatureFlagPriceUpdate"));
         LOGGER.info("AppConfig response parsed: {}", config);

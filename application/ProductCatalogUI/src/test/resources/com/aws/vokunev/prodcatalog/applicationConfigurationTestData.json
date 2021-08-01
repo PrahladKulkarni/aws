@@ -2,6 +2,9 @@
   "InstanceMetadataAccessRoles": [
     "operations"
   ],
+  "PriceUpdateRoles": [
+    "managers"
+  ],
   "APIKeySecret": "apigateway/apikeys/cloud101.link/production",
   "ServiceEndpointProductList": "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/list",
   "ServiceEndpointProductDetails": "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/details",

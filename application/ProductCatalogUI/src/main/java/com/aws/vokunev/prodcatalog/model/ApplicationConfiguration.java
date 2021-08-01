@@ -8,6 +8,7 @@ import java.util.List;
 public class ApplicationConfiguration {
 
     private List<String> instanceMetadataAccessRoles;
+    private List<String> priceUpdateRoles;
     private String apiKeySecret;
     private String apiKey;
     private String serviceEndpointProductList;
@@ -27,7 +28,15 @@ public class ApplicationConfiguration {
         this.instanceMetadataAccessRoles = instanceMetadataAccessRoles;
     }
 
-    public String getApiKeySecret() {
+    public List<String> getPriceUpdateRoles() {
+		return priceUpdateRoles;
+	}
+
+	public void setPriceUpdateRoles(List<String> priceUpdateRoles) {
+		this.priceUpdateRoles = priceUpdateRoles;
+	}
+
+	public String getApiKeySecret() {
         return apiKeySecret;
     }
 
@@ -83,12 +92,12 @@ public class ApplicationConfiguration {
         this.featureFlagPriceUpdate = featureFlagPriceUpdate;
     }
 
-    @Override
-    public String toString() {
-        return "ApplicationConfiguration [apiKeySecret=" + apiKeySecret + ", featureFlagPriceUpdate="
-                + featureFlagPriceUpdate + ", instanceMetadataAccessRoles=" + instanceMetadataAccessRoles
-                + ", itemColor=" + itemColor + ", serviceEndpointLogout=" + serviceEndpointLogout
-                + ", serviceEndpointProductDetails=" + serviceEndpointProductDetails + ", serviceEndpointProductList="
-                + serviceEndpointProductList + "]";
-    }
+	@Override
+	public String toString() {
+		return "ApplicationConfiguration [apiKeySecret=" + apiKeySecret + ", featureFlagPriceUpdate="
+				+ featureFlagPriceUpdate + ", instanceMetadataAccessRoles=" + instanceMetadataAccessRoles
+				+ ", itemColor=" + itemColor + ", priceUpdateRoles=" + priceUpdateRoles + ", serviceEndpointLogout="
+				+ serviceEndpointLogout + ", serviceEndpointProductDetails=" + serviceEndpointProductDetails
+				+ ", serviceEndpointProductList=" + serviceEndpointProductList + "]";
+	}
 }
