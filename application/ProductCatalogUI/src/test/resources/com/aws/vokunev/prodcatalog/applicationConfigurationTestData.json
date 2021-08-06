@@ -8,6 +8,7 @@
   "APIKeySecret": "apigateway/apikeys/cloud101.link/production",
   "ServiceEndpointProductList": "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/list",
   "ServiceEndpointProductDetails": "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/details",
+  "ServiceEndpointProductPriceUpdate": "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/price",
   "ServiceEndpointLogout": "https://auth.cloud101.link/logout?client_id=34fak97jrt25f4bqdvad28rsdd&logout_uri=https://www.cloud101.link/prodcatalog/",
   "ItemColor": "lightskyblue",
   "FeatureFlagPriceUpdate": true

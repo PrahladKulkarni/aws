@@ -116,6 +116,7 @@ public class ApplicationConfigurationAccessor {
         config.setApiKeySecret(context.read("$.APIKeySecret"));
         config.setServiceEndpointProductList(context.read("$.ServiceEndpointProductList"));
         config.setServiceEndpointProductDetails(context.read("$.ServiceEndpointProductDetails"));
+        config.setServiceEndpointProductPriceUpdate(context.read("$.ServiceEndpointProductPriceUpdate"));
         config.setServiceEndpointLogout(context.read("$.ServiceEndpointLogout"));
         config.setItemColor(context.read("$.ItemColor"));
         config.setFeatureFlagPriceUpdate(context.read("$.FeatureFlagPriceUpdate"));

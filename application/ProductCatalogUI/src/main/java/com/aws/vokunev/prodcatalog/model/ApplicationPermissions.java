@@ -65,6 +65,4 @@ public class ApplicationPermissions {
 
         return common.size() > 0 ? true : false;
     }
-
-
 }

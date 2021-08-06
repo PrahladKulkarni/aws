@@ -83,6 +83,4 @@ public class UnitTestApplicationsPermission {
         ApplicationPermissions permission = new ApplicationPermissions(token2, config);
         assertFalse(permission.isPermittedToUpdatePrice());
     }
-
-
 }

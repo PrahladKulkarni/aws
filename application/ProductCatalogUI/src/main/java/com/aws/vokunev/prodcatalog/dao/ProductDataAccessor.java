@@ -82,6 +82,8 @@ public class ProductDataAccessor extends APIDataAccessor {
      * This method fetches a {@link Product} for the provided ID from the provided
      * service endpoint.
      * 
+     * @param serviceEndpointURL
+     * @param apiKey
      * @param productId product ID
      * @return an instance of a {@link Product} for the provided ID or null if not
      *         found.
@@ -136,5 +138,23 @@ public class ProductDataAccessor extends APIDataAccessor {
 
         return product;
 
+    }
+
+    /**
+     * Sends product price update request to the provided service endpoint.
+     * 
+     * @param serviceEndpointURL
+     * @param apiKey
+     * @param productId
+     * @param price
+     */
+    public void updatePrice(String serviceEndpointURL, String apiKey, int productId, double price) throws IOException {
+
+        // Prepare the request
+        String requestUrlTemplate = serviceEndpointURL.concat("?id=%s&price=%s");
+        String requestUrl = String.format(requestUrlTemplate, productId, price);
+
+        // Invoke the API
+        invokePutAPIRequest(requestUrl, apiKey);
     }
 }

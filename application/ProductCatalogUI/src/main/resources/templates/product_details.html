@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<html>
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Product Catalog: Product Details</title>   
@@ -32,6 +30,10 @@
             font-size: 120%;
         }
 
+        input {
+            font-size: 100%;
+        }        
+
         tr {
             vertical-align: top;
         }
@@ -39,7 +41,7 @@
 </head>
 
 <body>
-    <jsp:include page="logout.jsp" />
+    <div th:replace="fragments.html :: logout" />    
     <div th:replace="fragments.html :: metadata" />
     <div id="header">Product Details</div>
     <div th:if="${product} != null">
@@ -79,7 +81,15 @@
                         </tr>
                         <tr>
                             <td><b>Price:</b></td>
-                            <td th:text="'$'+${product.price}" />
+                            <td th:unless="${permissions.permittedToUpdatePrice}" th:text="'$'+${product.price}" />
+                            <td th:if="${permissions.permittedToUpdatePrice}" align="right">
+                                <form action="#" th:action="@{/updatePrice}" th:object="${product}" method="POST">
+                                    <input type="hidden" th:field="*{id}"/>
+                                    <input type="text" size="6" th:field="*{price}"/>
+                                    <input type="submit" value="Update"/>
+                                </form>    
+                            </td>
+                        </tr>
                     </table>
                 </td>
                 <td>

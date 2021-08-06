@@ -37,6 +37,8 @@ public class UnitTestApplicationConfigurationAccessor {
                 "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/list");
         assertEquals(config.getServiceEndpointProductDetails(),
                 "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/details");
+        assertEquals(config.getServiceEndpointProductPriceUpdate(),
+                "https://hygnft82o0.execute-api.us-west-2.amazonaws.com/production/product/price");
         assertEquals(config.getServiceEndpointLogout(),
                 "https://auth.cloud101.link/logout?client_id=34fak97jrt25f4bqdvad28rsdd&logout_uri=https://www.cloud101.link/prodcatalog/");
         assertEquals(config.getItemColor(), "lightskyblue");

@@ -1,7 +1,6 @@
 package com.aws.vokunev.prodcatalog;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -15,6 +14,7 @@ import com.aws.vokunev.prodcatalog.model.CatalogItem;
 import com.aws.vokunev.prodcatalog.model.Product;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,27 +63,28 @@ public class IntegrationTestProductDataAccessor {
     @Test
     @DisplayName("Test for retrieving product list")
     void testRetrieveProductList() throws IOException {
-        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), config.getApiKey());
+        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(),
+                config.getApiKey());
         assertNotNull(catalog);
         assertTrue(catalog.size() > 0);
     }
 
     @Test
-    @DisplayName("Test for retrieving existing product")
+    @DisplayName("Test for retrieving an existing product")
     void testRetrieveExistingProduct() throws IOException {
         // Product id -1 is a special test case, the data accessor retrieves the first
         // available product
-        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), -1);
+        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(),
+                -1);
         assertNotNull(product);
     }
 
     @Test
-    @DisplayName("Test for retrieving non existing product")
+    @DisplayName("Test for retrieving a non-existing product")
     void testRetrieveNonExistingProduct() {
-        try {
-            Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), -100);
-            assertNull(product);
-        } catch (Exception ex) {
-        }
+        // An attempt to retrieve a non-exiting product should result in an exception
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), -100);
+        });
     }
 }

@@ -13,6 +13,7 @@ public class ApplicationConfiguration {
     private String apiKey;
     private String serviceEndpointProductList;
     private String serviceEndpointProductDetails;
+    private String serviceEndpointProductPriceUpdate;    
     private String serviceEndpointLogout;
     private String itemColor;
     private boolean featureFlagPriceUpdate;
@@ -72,6 +73,14 @@ public class ApplicationConfiguration {
         return serviceEndpointLogout;
     }
 
+    public String getServiceEndpointProductPriceUpdate() {
+        return serviceEndpointProductPriceUpdate;
+    }
+
+    public void setServiceEndpointProductPriceUpdate(String serviceEndpointProductPriceUpdate) {
+        this.serviceEndpointProductPriceUpdate = serviceEndpointProductPriceUpdate;
+    }
+
     public void setServiceEndpointLogout(String serviceEndpointLogout) {
         this.serviceEndpointLogout = serviceEndpointLogout;
     }
@@ -92,12 +101,13 @@ public class ApplicationConfiguration {
         this.featureFlagPriceUpdate = featureFlagPriceUpdate;
     }
 
-	@Override
-	public String toString() {
-		return "ApplicationConfiguration [apiKeySecret=" + apiKeySecret + ", featureFlagPriceUpdate="
-				+ featureFlagPriceUpdate + ", instanceMetadataAccessRoles=" + instanceMetadataAccessRoles
-				+ ", itemColor=" + itemColor + ", priceUpdateRoles=" + priceUpdateRoles + ", serviceEndpointLogout="
-				+ serviceEndpointLogout + ", serviceEndpointProductDetails=" + serviceEndpointProductDetails
-				+ ", serviceEndpointProductList=" + serviceEndpointProductList + "]";
-	}
+    @Override
+    public String toString() {
+        return "ApplicationConfiguration [apiKeySecret=" + apiKeySecret + ", featureFlagPriceUpdate="
+                + featureFlagPriceUpdate + ", instanceMetadataAccessRoles=" + instanceMetadataAccessRoles
+                + ", itemColor=" + itemColor + ", priceUpdateRoles=" + priceUpdateRoles + ", serviceEndpointLogout="
+                + serviceEndpointLogout + ", serviceEndpointProductDetails=" + serviceEndpointProductDetails
+                + ", serviceEndpointProductList=" + serviceEndpointProductList + ", serviceEndpointProductPriceUpdate="
+                + serviceEndpointProductPriceUpdate + "]";
+    }
 }

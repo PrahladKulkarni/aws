@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,18 +37,22 @@ public class ProductCatalogController {
     private ApplicationConfigurationAccessor configurationAccessor;
 
     @Autowired
-    private SecretsAccessor secretsAccessor;    
+    private SecretsAccessor secretsAccessor;
 
     @GetMapping("/")
-    public String productList(@RequestAttribute(name = "token", required = false) AccessToken token, Model model) throws Exception{
+    public String productList(@RequestAttribute(name = "token", required = false) AccessToken token, Model model)
+            throws Exception {
+
+        LOGGER.info("Product list requested");
 
         // Preprocess the request
-        ApplicationConfiguration config = preprocess(token, model);
+        ApplicationConfiguration config = preprocessGetRequest(token, model);
 
         // Retrieve the list of catalog items
-        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(), config.getApiKey());
+        List<CatalogItem> catalog = productDataAccessor.getProductCatalog(config.getServiceEndpointProductList(),
+                config.getApiKey());
         LOGGER.info("Retrieved {} items", catalog.size());
-        
+
         // Make the list available to the view
         model.addAttribute("catalog", catalog);
 
@@ -59,13 +64,16 @@ public class ProductCatalogController {
     public String productDetails(@RequestAttribute(name = "token", required = false) AccessToken token,
             @RequestParam(name = "id", required = true) int productId, Model model) throws Exception {
 
+        LOGGER.info("Product details requested for Id: {}", productId);
+
         // Preprocess the request
-        ApplicationConfiguration config = preprocess(token, model);
+        ApplicationConfiguration config = preprocessGetRequest(token, model);
 
         // Retrieve a product for the provided id
-        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(), productId);
+        Product product = productDataAccessor.getProduct(config.getServiceEndpointProductDetails(), config.getApiKey(),
+                productId);
         LOGGER.info("Retrieved product: {}", product);
-        
+
         // Make the list available to the view
         model.addAttribute("product", product);
 
@@ -73,10 +81,27 @@ public class ProductCatalogController {
         return "product_details";
     }
 
+    @PostMapping("/updatePrice")
+    public String productPriceUpdate(@RequestAttribute(name = "token", required = false) AccessToken token, Product product) throws Exception {
+
+        LOGGER.info("Price update submitted: {}", product);
+
+        // Preprocess the request
+        ApplicationConfiguration config = getApplicationConfiguration();
+
+        // Send product price update request
+        productDataAccessor.updatePrice(config.getServiceEndpointProductPriceUpdate(), config.getApiKey(), product.getId(), product.getPrice());
+
+        // redirect to the product details page
+        return "redirect:/product?id=" + product.getId();
+    }
+
     /**
-     * This method performs some common request preprocessing activities.
+     * This method provides current application configuration.
+     * 
+     * @return
      */
-    private ApplicationConfiguration preprocess(AccessToken token, Model model) {
+    private ApplicationConfiguration getApplicationConfiguration() {
 
         // Retrieve current application configuration
         ApplicationConfiguration config = configurationAccessor.getConfiguration();
@@ -88,6 +113,17 @@ public class ProductCatalogController {
             // The APi invocation requires an API key, which has to be retrieved first
             config.setApiKey(secretsAccessor.getSecret(config.getApiKeySecret(), "apikey"));
         }
+
+        return config;
+    }
+
+    /**
+     * This method performs some common request preprocessing activities.
+     */
+    private ApplicationConfiguration preprocessGetRequest(AccessToken token, Model model) {
+
+        // Retrieve current application configuration
+        ApplicationConfiguration config = getApplicationConfiguration();
 
         // Make the application configuration available to the view
         model.addAttribute("config", config);

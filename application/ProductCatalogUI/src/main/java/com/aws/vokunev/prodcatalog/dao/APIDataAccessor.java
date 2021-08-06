@@ -10,6 +10,8 @@ import com.jayway.jsonpath.JsonPath;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -22,10 +24,12 @@ public abstract class APIDataAccessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(APIDataAccessor.class);
 
+    enum HttpMethod { GET, PUT; }
+
     /**
-     * Invokes a web API.
+     * Sends a GET request to the provided URL.
      * 
-     * @param url    - the url of the API
+     * @param url - the url of the API
      * @return the result of an API invocation or null if not available
      */
     protected String invokeGetAPIRequest(String url) throws IOException {
@@ -33,19 +37,50 @@ public abstract class APIDataAccessor {
     }
 
     /**
-     * Invokes a web API with provided API key.
+     * Sends a GET request to the provided URL with provided API key.
      * 
      * @param url    - the url of the API
      * @param apiKey - the value of the API key
      * @return the result of an API invocation or null if not available
      */
     protected String invokeGetAPIRequest(String url, String apiKey) throws IOException {
+        return invokeAPIRequest(HttpMethod.GET, url, apiKey);
+    }
+
+    /**
+     * Sends a PUT request to the provided URL with provided API key.
+     * 
+     * @param url    - the url of the API
+     * @param apiKey - the value of the API key
+     * @return the result of an API invocation or null if not available
+     */
+    protected String invokePutAPIRequest(String url, String apiKey) throws IOException {
+        return invokeAPIRequest(HttpMethod.PUT, url, apiKey);
+    }
+
+    /**
+     * Sends a specified HTTP request to the provided URL with provided API key.
+     * 
+     * @param url    - the url of the API
+     * @param apiKey - the value of the API key
+     * @return the result of an API invocation or null if not available
+     */
+    protected String invokeAPIRequest(HttpMethod method, String url, String apiKey) throws IOException {
 
         int timeoutSeconds = 5;
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet(url);
-        
+
+        HttpRequestBase request = null;
+        switch (method) {
+            case GET:
+                request = new HttpGet(url);
+                break;
+            case PUT:
+                request = new HttpPut(url);
+                break;
+        }
+
         // Include an API key if provided
         if (apiKey != null) {
             request.setHeader("x-api-key", apiKey);
@@ -86,5 +121,5 @@ public abstract class APIDataAccessor {
 
         // Parse the content
         return result;
-    }
+    }    
 }
