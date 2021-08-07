@@ -4,18 +4,15 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * This exception handler replaces the default exception handler. It adds a log
  * correlation Id that can be used to locate the detailed exception information
  * in the CloudWatch logs.
  */
-@EnableWebMvc
 @ControllerAdvice
 public class ControllerExceptionHandler {
 

@@ -1,0 +1,46 @@
+body {
+    background-color: white;
+}
+
+@font-face {
+    font-family: "Unkempt";
+    src: url("https://my-favorite-things.s3.us-west-2.amazonaws.com/fonts/Unkempt-Bold.ttf");
+}
+
+div#header {
+    font-family: "Unkempt";
+    font-size: 200%;
+    padding-bottom: 10px;
+}
+
+div#metadata {
+    border-style: solid;
+    border-width: medium;
+    border-color: red;
+    font-size: 150%;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+div#logout {
+    text-align: right;
+    font-size: 120%;
+    padding: 10px;
+}
+
+table {
+    margin-top: 15px;
+}
+
+table td {
+    padding: 8px;
+    font-size: 120%;
+}
+
+tr {
+    vertical-align: top;
+}
+
+th {
+    text-align: left;
+}

@@ -1,60 +1,12 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Product Catalog: Product List</title>    
-    <style type="text/css" media="screen, print">
-        body {
-            background-color: white;
-        }
-
-        div#metadata {
-            border-style: solid;
-            border-width: medium;
-            border-color: red;
-            font-size: 150%;
-            padding: 10px;
-            margin-bottom: 15px;;
-        }
-
-        div#logout {
-            text-align: right; 
-            font-size: 120%; 
-            padding: 10px;
-        }
-
-        @font-face {
-            font-family: "Unkempt";
-            src: url("https://my-favorite-things.s3.us-west-2.amazonaws.com/fonts/Unkempt-Bold.ttf");
-        }        
-
-        div#header {
-            font-family: "Unkempt";
-            font-size: 200%;
-            padding-bottom: 10px;
-        }
-
-        div#header, div#version {
+    <meta charset="UTF-8">
+    <title>Product Catalog: Product List</title>
+    <link th:href="@{/styles/main.css}" type="text/css" rel="stylesheet" />    
+    <style type="text/css">
+        div#header,div#version {
             display: inline;
-        }
-
-        table tbody tr:nth-child(even) {
-            background-color: [[${config.itemColor}]];
-            color: black;
-        }
-
-        table {
-            margin-top: 15px;
-        }
-
-        table td {
-            padding: 7px;
-            font-size: 120%;
-        }
-
-        th {
-            text-align: left;
         }
 
         .priceIncrease {
@@ -66,14 +18,18 @@
             color: blue;
             text-decoration: line-through;
         }
+
+        table tbody tr:nth-child(even) {
+            background-color: [[${config.itemColor}]];
+            color: black;
+        }
     </style>
 </head>
-
 <body>
-    <div th:replace="fragments.html :: logout" />    
-    <div th:replace="fragments.html :: metadata" />    
+    <div th:replace="fragments.html :: logout" />
+    <div th:replace="fragments.html :: metadata" />
     <div id="header">Product Catalog</div>
-    <div id="version" th:text="'('+${@environment.getProperty('spring.application.version')}+')'"/>
+    <div id="version" th:text="'('+${@environment.getProperty('spring.application.version')}+')'" />
     <table>
         <th>ID</th>
         <th>Year</th>
