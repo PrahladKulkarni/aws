@@ -20,6 +20,11 @@
             padding-bottom: 10px;
         }        
 
+        div#message {
+            font-size: 150%;
+            color: blue;
+        }       
+
         table tbody tr:nth-child(even) {
             background-color: [[${config.itemColor}]];
             color: black;
@@ -44,6 +49,9 @@
     <div th:replace="fragments.html :: logout" />    
     <div th:replace="fragments.html :: metadata" />
     <div id="header">Product Details</div>
+    <div id="message" th:if="${newPrice} != null">
+        <div th:text="'A price change request to $'+${newPrice}+' has been submitted.'"/>
+    </div>    
     <div th:if="${product} != null">
         <table width="100%">
             <tr>

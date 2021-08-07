@@ -24,6 +24,7 @@ public abstract class APIDataAccessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(APIDataAccessor.class);
 
+    // HTTP methods supported by this accessor 
     enum HttpMethod { GET, PUT; }
 
     /**

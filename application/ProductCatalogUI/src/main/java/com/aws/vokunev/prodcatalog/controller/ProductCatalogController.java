@@ -16,10 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller handles requests specific to the Product Catalog business
@@ -62,7 +64,8 @@ public class ProductCatalogController {
 
     @GetMapping("/product")
     public String productDetails(@RequestAttribute(name = "token", required = false) AccessToken token,
-            @RequestParam(name = "id", required = true) int productId, Model model) throws Exception {
+            @RequestParam(name = "id", required = true) int productId,
+            @RequestParam(name = "newPrice", required = false) String newPrice, Model model) throws Exception {
 
         LOGGER.info("Product details requested for Id: {}", productId);
 
@@ -77,12 +80,15 @@ public class ProductCatalogController {
         // Make the list available to the view
         model.addAttribute("product", product);
 
+        // Provide indication to the view that the price update has been requested.
+        model.addAttribute("newPrice", newPrice);
+
         // return the name of the view file
         return "product_details";
     }
 
     @PostMapping("/updatePrice")
-    public String productPriceUpdate(@RequestAttribute(name = "token", required = false) AccessToken token, Product product) throws Exception {
+    public ModelAndView productPriceUpdate(Product product, ModelMap model) throws Exception {
 
         LOGGER.info("Price update submitted: {}", product);
 
@@ -90,10 +96,13 @@ public class ProductCatalogController {
         ApplicationConfiguration config = getApplicationConfiguration();
 
         // Send product price update request
-        productDataAccessor.updatePrice(config.getServiceEndpointProductPriceUpdate(), config.getApiKey(), product.getId(), product.getPrice());
+        productDataAccessor.updatePrice(config.getServiceEndpointProductPriceUpdate(), config.getApiKey(),
+                product.getId(), product.getPrice());
 
-        // redirect to the product details page
-        return "redirect:/product?id=" + product.getId();
+        // Redirect to the product details page
+        model.addAttribute("id", product.getId());
+        model.addAttribute("newPrice", product.getPrice());
+        return new ModelAndView("redirect:/product", model);
     }
 
     /**
