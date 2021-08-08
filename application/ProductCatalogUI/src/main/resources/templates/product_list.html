@@ -10,6 +10,10 @@
             display: inline;
         }
 
+        table {
+            margin-top: 15px;
+        }
+
         .priceIncrease {
             color: red;
             text-decoration: line-through;
@@ -20,7 +24,7 @@
             text-decoration: line-through;
         }
 
-        table tbody tr:nth-child(even) {
+        tr:nth-of-type(even) {
             background-color: [[${config.itemColor}]];
             color: black;
         }
