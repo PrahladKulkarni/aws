@@ -15,6 +15,7 @@ public class InstanceMetadataAccessor extends APIDataAccessor {
     /**
      * This method fetches the instance metadata in case if the application
      * has been deployed to an EC2 instance.
+     * 
      * @return an instance of a {@link InstanceMetadata} or null if not available.
      */
     public InstanceMetadata getInstanceMetadata() throws IOException {

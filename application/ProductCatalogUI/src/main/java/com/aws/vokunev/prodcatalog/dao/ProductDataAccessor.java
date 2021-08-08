@@ -72,7 +72,7 @@ public class ProductDataAccessor extends APIDataAccessor {
             catalog.add(item);
         }
 
-        // Order the items since the table scan perform no ordering
+        // Order the items since the table scan performs no ordering
         Collections.sort(catalog);
 
         return catalog;

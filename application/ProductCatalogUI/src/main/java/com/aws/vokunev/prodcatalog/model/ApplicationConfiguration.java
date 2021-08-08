@@ -3,7 +3,7 @@ package com.aws.vokunev.prodcatalog.model;
 import java.util.List;
 
 /**
- * An object of this type represents application configuration data
+ * An object of this type represents the application configuration data
  */
 public class ApplicationConfiguration {
 
