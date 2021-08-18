@@ -13,9 +13,16 @@ It is a [Maven](https://maven.apache.org/) based project, so you can open this p
 * `cdk synth`
 * `cdk deploy`      enter Y when prompted
 
-## To deploy the changeset
-* Change the number of queues parameter value in HelloCdkApp file
+## To see the application-level parameter validation in action
+* Update the number of queues parameter value in HelloCdkApp to 15.
 * `mvn compile`
+* `cdk synth`
+* Observe `java.lang.RuntimeException: The requested number of queues (15) exceeds the maximum allowed amount of 10.`
+
+## To create and deploy the changeset
+* Update the number of queues parameter value in HelloCdkApp file to a number below or equal 10.
+* `mvn compile`
+* `cdk synth`
 * `cdk diff`        to see the additional resource that will be created in the changeset  
 * `cdk deploy`      enter Y when prompted
 
