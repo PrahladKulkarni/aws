@@ -1,4 +1,4 @@
-package com.myorg;
+package com.aws.vokunev.cdk;
 import software.amazon.awscdk.core.App;
 
 import com.aws.vokunev.cdk.HelloCdkStack;
@@ -18,7 +18,7 @@ public class HelloCdkStackTest {
     @Test
     public void testStack() throws IOException {
         App app = new App();
-        HelloCdkStack stack = new HelloCdkStack(app, "test");
+        HelloCdkStack stack = new HelloCdkStack(app, "test", 2, "prefix");
 
         JsonNode actual = JSON.valueToTree(app.synth().getStackArtifact(stack.getArtifactId()).getTemplate());
         assertThat(actual.toString(), CoreMatchers.both(CoreMatchers.containsString("AWS::SQS::Queue")).and(CoreMatchers.containsString("AWS::SNS::Topic")));
