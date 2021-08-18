@@ -1,4 +1,4 @@
-package com.myorg;
+package com.aws.vokunev.cdk;
 
 import software.amazon.awscdk.core.App;
 

@@ -1,5 +1,7 @@
 package com.myorg;
 import software.amazon.awscdk.core.App;
+
+import com.aws.vokunev.cdk.HelloCdkStack;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
