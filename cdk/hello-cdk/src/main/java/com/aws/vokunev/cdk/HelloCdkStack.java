@@ -19,23 +19,24 @@ public class HelloCdkStack extends Stack {
     public final static int MAX_NUMBER_OF_QUEUES = 10; 
 
     /**
-     * This method creates an Amazon SNS topic "MyCDKTopic". It also creates a
-     * provided number of Amazon SQS queues with the provided name prefix. Each of
-     * these queues is subscribed to the SNS topic.
+     * This method creates an AWS CloudFormation stack with a provided name.
+     * The stack contains an Amazon SNS topic "MyCdkTopic". It also creates
+     * a specified number of Amazon SQS queues with the specified name prefix.
+     * Each of these queues is subscribed to the SNS topic.
      * 
-     * @param parent          reference to the parent construct
-     * @param id              name of the stack
-     * @param numberOfQueues  number of SQS queues to be created
-     * @param queueNamePrefix an SQS queue name prefix
+     * @param parent        reference to the parent construct
+     * @param stackName     name of the AWS CloudFormation stack to be created
+     * @param totalQueues   number of Amazon SQS queues to be created 
+     * @param namePrefix    prefix for the Amazon SQS queue name
      * @throws RuntimeException if the numberOfQueues parameter exceeds the value of MAX_NUMBER_OF_QUEUES
      */
-    public HelloCdkStack(final Construct parent, final String id, final int numberOfQueues,
-            final String queueNamePrefix) {
-        super(parent, id, null);
+    public HelloCdkStack(final Construct parent, final String stackName, final int totalQueues,
+            final String namePrefix) {
+        super(parent, stackName, null);
 
         // Provide parameter valudation logic
-        if(numberOfQueues > MAX_NUMBER_OF_QUEUES) {
-            throw new RuntimeException(String.format("The requested number of queues (%s) exceeds the maximum allowed amount of %s.", numberOfQueues, MAX_NUMBER_OF_QUEUES));
+        if(totalQueues > MAX_NUMBER_OF_QUEUES) {
+            throw new RuntimeException(String.format("The requested number of queues (%s) exceeds the maximum allowed amount of %s.", totalQueues, MAX_NUMBER_OF_QUEUES));
         }
 
         // Create an SNS topic
@@ -44,11 +45,11 @@ public class HelloCdkStack extends Stack {
             .displayName("An SNS topic created with CDK")
             .build();
 
-        // Create a specified number of SQS queues and subscribe to the topic
-        for (int i = 0; i < numberOfQueues; i++) {
+        // Create a specified number of SQS queues and subscribe each to the SNS topic
+        for (int i = 0; i < totalQueues; i++) {
 
             Queue queue = Queue.Builder.create(this, "MyQueueID" + i)
-                .queueName(queueNamePrefix + i)
+                .queueName(namePrefix + i)
                 .visibilityTimeout(Duration.seconds(300))
                 .retentionPeriod(Duration.days(5))
                 .build();
