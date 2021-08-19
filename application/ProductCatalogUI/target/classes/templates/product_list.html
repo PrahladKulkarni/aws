@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+    <link rel='shortcut icon' type='image/x-icon' th:href="@{/images/favicon.ico}" />
+    <link th:href="@{/styles/main.css}" type="text/css" rel="stylesheet" />    
+    <style type="text/css">
+        div#header,div#version {
+            display: inline;
+        }
+
+        table {
+            margin-top: 15px;
+        }
+
+        .priceIncrease {
+            color: red;
+            text-decoration: line-through;
+        }
+
+        .priceDrop {
+            color: blue;
+            text-decoration: line-through;
+        }
+
+        tr:nth-of-type(even) {
+            background-color: [[${config.itemColor}]];
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="fragments.html :: logout" />
+    <div th:replace="fragments.html :: metadata" />
+    <div id="header">Product Catalog</div>
+    <div id="version" th:text="'('+${@environment.getProperty('spring.application.version')}+')'" />
+    <table>
+        <th>ID</th>
+        <th>Year</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Inventory</th>
+        <th>Price</th>
+        <th>Price Trend</th>
+        <tr th:each="item: ${catalog}">
+            <td><a th:href="@{product(id=${item.id})}" th:text="${item.id}" target="_blank" /></td>
+            <td th:text="${item.year}" />
+            <td th:text="${item.title}" />
+            <td th:text="${item.productCategory}" />
+            <td>
+                <div th:text="${item.qty}" style="text-align: right;" />
+            </td>
+            <td th:text="'$'+${item.price}" />
+            <td>
+                <div th:if="${item.oldPrice} > 0">
+                    <div class="priceIncrease" th:if="${item.price} > ${item.oldPrice}"
+                        th:text="'$'+${item.oldPrice}" />
+                    <div class="priceDrop" th:if="${item.price} < ${item.oldPrice}" th:text="'$'+${item.oldPrice}" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
