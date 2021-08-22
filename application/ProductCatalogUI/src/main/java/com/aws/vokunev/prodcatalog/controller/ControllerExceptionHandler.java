@@ -24,7 +24,7 @@ public class ControllerExceptionHandler {
 
         String correlationId = UUID.randomUUID().toString();
 
-        LOGGER.error("\nLog correlation Id: {}\n{}", correlationId, ExceptionUtils.getStackTrace(exception));
+        LOGGER.error("Log correlation Id: {}\n{}", correlationId, ExceptionUtils.getStackTrace(exception));
 
         return getModelAndView(exception, correlationId, "error");
     }
