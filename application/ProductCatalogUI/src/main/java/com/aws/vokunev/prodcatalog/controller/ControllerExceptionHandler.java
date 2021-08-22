@@ -2,6 +2,7 @@ package com.aws.vokunev.prodcatalog.controller;
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,7 +24,7 @@ public class ControllerExceptionHandler {
 
         String correlationId = UUID.randomUUID().toString();
 
-        LOGGER.error("Log correlation Id: {}, details: {}", correlationId, exception.getStackTrace());
+        LOGGER.error("Log correlation Id: {}, details: {}", correlationId, ExceptionUtils.getStackTrace(exception));
 
         return getModelAndView(exception, correlationId, "error");
     }

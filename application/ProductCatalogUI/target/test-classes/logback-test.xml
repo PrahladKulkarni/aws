@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- For supressing the SpringBoot logs, see: https://mkyong.com/spring-boot/spring-boot-test-how-to-stop-debug-logs/ -->
-<configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml" />
-    <logger name="org.springframework" level="WARN"/>
-</configuration>
