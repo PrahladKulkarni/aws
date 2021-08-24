@@ -8,7 +8,7 @@ sns = boto3.resource('sns')
 
 """
 This function is a destination for the CloudWatch event log subscription filter.
-It receives an event in case if the filter has selected an error message for the
+It receives an event in case if the filter has selected an error message from the
 application log.
 """
 def lambda_handler(event, context):
