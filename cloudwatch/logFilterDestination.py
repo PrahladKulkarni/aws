@@ -21,12 +21,16 @@ def lambda_handler(event, context):
     uncompressed_payload = gzip.decompress(compressed_payload)
     payload = json.loads(uncompressed_payload)    
     
+    # publish the application error notification to an SNS topic
+    topic = sns.Topic(os.environ['SNS_TOPIC'])
     log_events = payload['logEvents']
     for log_event in log_events:
-        # Log the event
-        print(f'LogEvent: {log_event}')
-        # Publish the event notification to an SNS topic
-        topic = sns.Topic(os.environ['SNS_TOPIC'])
         response = topic.publish(
-            Message='An error has occured in the ProductCatalogUI application. Please check the application logs: ' + os.environ['CW_LOG_INSIGHTS_QUERY_LINK']
-        )  
+            Message='An error has occured in the ProductCatalogUI application. Please check the application logs: ' + os.environ['CW_LOG_INSIGHTS_QUERY_LINK'],
+            MessageAttributes={
+                "error_notification": {
+                    "DataType": "String",
+                    "StringValue": "true"
+                }
+            }    
+        )
