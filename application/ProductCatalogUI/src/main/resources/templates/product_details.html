@@ -82,14 +82,14 @@
             </tr>
             <tr>
                 <td><b>Price:</b></td>
-                <td th:unless="${permissions.permittedToUpdatePrice}" th:text="'$'+${product.price}" />
-                <td th:if="${permissions.permittedToUpdatePrice}" align="right">
+                <td th:if="${permissions.permittedToUpdatePrice} AND ${config.featureFlagPriceUpdate}" align="right">
                     <form action="#" th:action="@{/updatePrice}" th:object="${product}" method="POST">
                         <input type="hidden" th:field="*{id}" />
-                        <input type="text" size="6" th:field="*{price}" />
+                        <input type="text" size="15" th:field="*{price}" />
                         <input type="submit" value="Update" />
                     </form>
                 </td>
+                <td th:unless="${permissions.permittedToUpdatePrice} AND ${config.featureFlagPriceUpdate}" th:text="'$'+${product.price}" />
             </tr>
         </table>
         <div id="image">
