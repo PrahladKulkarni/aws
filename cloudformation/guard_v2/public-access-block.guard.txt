@@ -1,0 +1,24 @@
+################################################################################
+# AWS CLOUDFORMATION GUARD RULESET - S3 PUBLIC ACCESS BLOCK
+################################################################################
+
+# Basic check to ensure cfn template has resources
+Resources !empty
+
+# Resource filtering (types of resources we are interested in)
+let s3_buckets = Resources.*[ Type == 'AWS::S3::Bucket' ]
+
+# Rule: Require S3 Public Access Block configurations set to true
+rule s3_bucket_require_public_access_block when %s3_buckets !empty {
+  %s3_buckets {
+    Properties {
+      PublicAccessBlockConfiguration exists
+      PublicAccessBlockConfiguration {
+        BlockPublicAcls       == true << BlockPublicAcls is not enabled       >>
+        BlockPublicPolicy     == true << BlockPublicPolicy is not enabled     >>
+        IgnorePublicAcls      == true << IgnorePublicAcls is not enabled      >>
+        RestrictPublicBuckets == true << RestrictPublicBuckets is not enabled >>
+      }
+    }
+  }
+}

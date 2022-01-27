@@ -1,3 +1,3 @@
 {
-  "app": "mvn -e -q exec:java -DstackName=MyDemoStack -DtotalQueues=5 -DnamePrefix=MyDemoQueue"
+  "app": "mvn -e -q exec:java -DstackName=MyDemoStack -DtotalQueues=10 -DnamePrefix=MyDec14Queue"
 }
