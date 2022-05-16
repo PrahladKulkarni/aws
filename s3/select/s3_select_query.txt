@@ -1,1 +1,1 @@
-select s.Title from s3object[*].Products[*] s where s.id=209
+select s.* from s3object[*].Products[*] s where s.id=209
